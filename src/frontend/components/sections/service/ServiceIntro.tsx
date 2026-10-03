@@ -25,7 +25,7 @@ export function ServiceIntro({ title, intro, videoSrc, videoLabel }: ServiceIntr
         decorative
         className="h-[135px] w-full max-w-[350px] lg:h-[147px] lg:max-w-none"
       >
-        <BackgroundVideo src={videoSrc} />
+        <BackgroundVideo sources={videoSrc ? [videoSrc] : undefined} />
       </MediaPlaceholder>
     </section>
   );

@@ -8,11 +8,9 @@
  */
 export const home = {
   headline: "Rooted in Ancient Wisdom. Refined for Modern Living.",
-  featured: {
-    title: "Ayurveda",
-    href: "/ayurveda",
-    imageLabel: "Ayurvedic herbs and healing ingredients arranged on a wooden table",
-    imageSrc: undefined as string | undefined,
+  cta: {
+    label: "Book Now",
+    href: "/ayurveda#book",
   },
   hero: {
     /**
@@ -21,8 +19,14 @@ export const home = {
      * posterSrc: "/media/hero-poster.jpg" (also the LCP image, keep it under ~300 KB).
      * With nothing set, the dark placeholder background is shown.
      */
-    videoSrc: undefined as string | undefined,
-    videoSrcMobile: undefined as string | undefined,
+    videoSources: [
+      "https://pub-fe7d6537004a4bd49472a6861a9a1224.r2.dev/videos/AdobeStock_2185762968.mp4",
+      "https://pub-fe7d6537004a4bd49472a6861a9a1224.r2.dev/videos/video2.mp4",
+    ] as readonly string[],
+    videoSourcesMobile: [
+      "https://pub-fe7d6537004a4bd49472a6861a9a1224.r2.dev/videos/AdobeStock_2185762968.mp4",
+      "https://pub-fe7d6537004a4bd49472a6861a9a1224.r2.dev/videos/video2.mp4",
+    ] as readonly string[],
     posterSrc: undefined as string | undefined,
     posterAlt: "Sunlight streaming through a green forest",
   },
