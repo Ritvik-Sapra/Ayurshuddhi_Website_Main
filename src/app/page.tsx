@@ -43,7 +43,7 @@ export default function HomePage() {
         {headline}
       </h1>
 
-      <div className="lg:absolute lg:bottom-11 lg:right-10">
+      <div className="mb-8 lg:absolute lg:bottom-24 lg:right-10 lg:mb-0">
         <GlassCta href={cta.href} className="w-full lg:w-auto">
           {cta.label}
         </GlassCta>
