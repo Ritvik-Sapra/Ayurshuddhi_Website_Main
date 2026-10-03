@@ -26,7 +26,7 @@ export default async function OpengraphImage() {
       }}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={logoSrc} width={300} height={291} alt="" />
+      <img src={logoSrc} width={300} height={261} alt="" />
       <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
         <div style={{ fontSize: 68, lineHeight: 1.1, letterSpacing: -2 }}>{site.name}</div>
         <div style={{ fontSize: 34, lineHeight: 1.3, opacity: 0.85 }}>{site.tagline}</div>

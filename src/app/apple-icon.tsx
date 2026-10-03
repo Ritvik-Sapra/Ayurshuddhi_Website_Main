@@ -21,7 +21,7 @@ export default async function AppleIcon() {
       }}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={src} width={124} height={120} alt="" />
+      <img src={src} width={120} height={120} alt="" />
     </div>,
     { ...size },
   );

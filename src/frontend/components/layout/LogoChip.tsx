@@ -14,15 +14,15 @@ export function LogoChip({ className }: { className?: string }) {
         className,
       )}
     >
-      <span className="relative block size-10 overflow-hidden">
+      <span className="relative flex size-10 items-center justify-center">
         <Image
           src="/brand/ayurshuddhi-logo-emblem.svg"
           alt=""
-          width={54}
-          height={52}
+          width={40}
+          height={40}
           loading="eager"
           unoptimized
-          className="absolute -left-[5.69px] -top-[0.13px] h-[52.19px] w-[53.75px] max-w-none"
+          className="size-9 object-contain"
         />
       </span>
     </Link>
