@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { home } from "@/frontend/content/home";
-import { ServiceCard } from "@/frontend/components/cards/ServiceCard";
+import { GlassCta } from "@/frontend/components/ui/GlassCta";
 import { BackgroundVideo } from "@/frontend/components/ui/BackgroundVideo";
 
 export const metadata: Metadata = {
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 /** Figma: Home. Full-screen video hero with the headline and one featured service card. */
 export default function HomePage() {
-  const { hero, featured, headline } = home;
+  const { hero, cta, headline } = home;
   return (
     <main
       id="main"
@@ -32,8 +32,8 @@ export default function HomePage() {
           <div className="size-full bg-gradient-to-b from-placeholder-dark via-placeholder-dark to-green-dark/60" />
         )}
         <BackgroundVideo
-          src={hero.videoSrc}
-          srcMobile={hero.videoSrcMobile}
+          sources={hero.videoSources}
+          sourcesMobile={hero.videoSourcesMobile}
           poster={hero.posterSrc}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent" />
@@ -43,13 +43,10 @@ export default function HomePage() {
         {headline}
       </h1>
 
-      <div className="lg:absolute lg:bottom-11 lg:right-10 lg:w-64">
-        <ServiceCard
-          title={featured.title}
-          href={featured.href}
-          imageLabel={featured.imageLabel}
-          imageSrc={featured.imageSrc}
-        />
+      <div className="lg:absolute lg:bottom-11 lg:right-10">
+        <GlassCta href={cta.href} className="w-full lg:w-auto">
+          {cta.label}
+        </GlassCta>
       </div>
     </main>
   );
