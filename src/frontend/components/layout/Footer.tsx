@@ -45,7 +45,7 @@ export function Footer() {
         src="/brand/ayurshuddhi-logo-full.svg"
         alt={site.name}
         width={230}
-        height={223}
+        height={200}
         unoptimized
         className="absolute left-5 top-[512px] h-auto w-[190px] lg:left-10 lg:top-[473px] lg:w-[230px]"
       />
