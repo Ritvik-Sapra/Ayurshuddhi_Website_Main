@@ -1,5 +1,5 @@
 import { LogoChip } from "@/frontend/components/layout/LogoChip";
-import { MenuOverlay } from "@/frontend/components/layout/MenuOverlay";
+import { RadialMenu } from "@/frontend/components/layout/RadialMenu";
 
 /**
  * Figma: Nav/Bar. Two floating glass chips (logo left, menu right) that stay in view.
@@ -9,7 +9,7 @@ export function NavBar() {
   return (
     <header className="pointer-events-none fixed inset-x-0 top-0 z-40 h-[var(--nav-height)]">
       <LogoChip />
-      <MenuOverlay />
+      <RadialMenu />
     </header>
   );
 }

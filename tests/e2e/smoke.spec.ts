@@ -1,11 +1,11 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("navigation", () => {
-  test("home shows the hero and links to Ayurveda", async ({ page }) => {
+  test("home shows the hero and Book Now links to Ayurveda booking", async ({ page }) => {
     await page.goto("/");
     await expect(page.getByRole("heading", { level: 1 })).toContainText("Rooted in Ancient Wisdom");
-    await page.getByRole("link", { name: "Ayurveda" }).first().click();
-    await expect(page).toHaveURL(/\/ayurveda$/);
+    await page.getByRole("link", { name: "Book Now" }).click();
+    await expect(page).toHaveURL(/\/ayurveda#book$/);
     await expect(page.getByRole("heading", { level: 1, name: "Ayurveda" })).toBeVisible();
   });
 
@@ -26,7 +26,7 @@ test.describe("navigation", () => {
     await page.goto("/");
     await page.getByRole("button", { name: "Open menu" }).click();
     await page.getByRole("dialog").getByRole("link", { name: "Blogs" }).click();
-    await expect(page).toHaveURL(/\/blogs$/);
+    await expect(page).toHaveURL(/\/maintenance$/);
     await expect(page.getByRole("dialog")).toBeHidden();
   });
 

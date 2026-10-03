@@ -20,12 +20,13 @@ export function AboutPractitioner({ practitioner }: { practitioner: About["pract
     >
       {/* Mobile: photos, heading and bio stacked. */}
       <div className="flex flex-col items-center gap-6 px-5 py-16 text-center lg:hidden">
-        <div className="flex flex-col gap-6">
+        {/* 340px squares from Figma, shrinking to fit screens narrower than 380px. */}
+        <div className="flex w-full max-w-[340px] flex-col gap-6">
           {photos.slice(0, 2).map((photo, index) => (
             <MediaPlaceholder
               key={photo.label}
               label={photo.label}
-              className={cn("size-[340px] rounded-sm", index === 1 && "bg-green")}
+              className={cn("aspect-square w-full rounded-sm", index === 1 && "bg-green")}
             />
           ))}
         </div>
@@ -33,12 +34,12 @@ export function AboutPractitioner({ practitioner }: { practitioner: About["pract
           {practitioner.headingMobile}
         </h2>
         <p className="max-w-[340px] text-body">{practitioner.bio}</p>
-        <div className="flex flex-col gap-6">
+        <div className="flex w-full max-w-[340px] flex-col gap-6">
           {photos.slice(2).map((photo) => (
             <MediaPlaceholder
               key={photo.label}
               label={photo.label}
-              className="size-[340px] rounded-sm"
+              className="aspect-square w-full rounded-sm"
             />
           ))}
         </div>

@@ -13,12 +13,22 @@ export function ScrollFlag() {
     const element = sentinel.current;
     if (!element) return;
     const root = document.documentElement;
-    const observer = new IntersectionObserver(([entry]) => {
-      root.toggleAttribute("data-scrolled", entry.boundingClientRect.top < 0);
-    });
-    observer.observe(element);
+    const update = (top: number) => root.toggleAttribute("data-scrolled", top < 0);
+
+    let stop: () => void;
+    if (typeof window.IntersectionObserver === "function") {
+      const observer = new IntersectionObserver(([entry]) => update(entry.boundingClientRect.top));
+      observer.observe(element);
+      stop = () => observer.disconnect();
+    } else {
+      // Some embedded web views and older browsers lack IntersectionObserver.
+      const onScroll = () => update(element.getBoundingClientRect().top);
+      onScroll();
+      window.addEventListener("scroll", onScroll, { passive: true });
+      stop = () => window.removeEventListener("scroll", onScroll);
+    }
     return () => {
-      observer.disconnect();
+      stop();
       root.removeAttribute("data-scrolled");
     };
   }, []);
