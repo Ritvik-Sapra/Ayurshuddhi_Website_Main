@@ -1,0 +1,418 @@
+/*
+ * Loading skeletons: plain HTML + CSS, no JavaScript.
+ *
+ * Markup pattern (see components/skeletons/*):
+ *   <div class="sk-page sk-on-light" role="status" aria-busy="true">
+ *     <span class="sr-only">Loading…</span>
+ *     <div class="sk sk--title"></div>
+ *     <div class="sk sk--text"></div>
+ *   </div>
+ *
+ * The wrapper picks a tone (.sk-on-light | .sk-on-green | .sk-on-dark) so blocks stay visible
+ * on cream, green and dark sections. Motion is a single transform sweep; reduced motion gets a
+ * static block.
+ */
+
+.sk-on-light {
+  --sk-base: rgb(69 106 75 / 0.12);
+  --sk-shine: rgb(255 255 255 / 0.65);
+}
+.sk-on-green {
+  --sk-base: rgb(255 251 231 / 0.12);
+  --sk-shine: rgb(255 251 231 / 0.2);
+}
+.sk-on-dark {
+  --sk-base: rgb(94 107 92 / 0.55);
+  --sk-shine: rgb(255 251 231 / 0.14);
+}
+
+.sk,
+.media-slot:not(:has(img[data-loaded]))::after {
+  --_base: var(--sk-base, var(--color-placeholder));
+  --_shine: var(--sk-shine, rgb(255 251 231 / 0.14));
+}
+
+/* A skeleton block */
+.sk {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  background: var(--_base);
+}
+.sk::after,
+.media-slot:not(:has(img[data-loaded]))::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, var(--_shine), transparent);
+  animation: sk-shimmer 1.2s ease-in-out infinite;
+}
+@keyframes sk-shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+/* Image slots shimmer until their <img> reports data-loaded (see FadeInImage). */
+.media-slot:not(:has(img[data-loaded]))::after {
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Block variants */
+.sk--title {
+  height: 3.5rem;
+  width: min(100%, 20rem);
+}
+.sk--heading {
+  height: 2.5rem;
+  width: min(100%, 16rem);
+}
+.sk--text {
+  height: 1rem;
+  width: 100%;
+}
+.sk--text-short {
+  height: 1rem;
+  width: 60%;
+}
+.sk--media {
+  width: 100%;
+  min-height: 12rem;
+}
+.sk--button {
+  height: 2.5rem;
+  width: 8.5rem;
+}
+.sk--chip {
+  height: 3rem;
+  width: 4.5rem;
+}
+.sk--card {
+  height: 13.5rem;
+  width: 100%;
+}
+.sk--circle {
+  border-radius: 50%;
+}
+
+/* Layout helpers for skeleton pages */
+.sk-stack {
+  display: flex;
+  flex-direction: column;
+}
+.sk-center {
+  align-items: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sk::after,
+  .media-slot:not(:has(img[data-loaded]))::after {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+/* ---------- Page skeletons (mirror the real layouts so nothing jumps when content arrives) ---------- */
+.sk-bg-green {
+  background: var(--color-green);
+}
+.sk-bg-cream {
+  background: var(--color-cream);
+}
+.sk-bg-white {
+  background: var(--color-white);
+}
+.sk-bg-dark {
+  background: var(--color-placeholder-dark);
+}
+.sk-bg-ph {
+  background: var(--color-placeholder);
+}
+
+.sk-block-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.sk-w-60 {
+  width: 60%;
+}
+.sk-w-80 {
+  width: 80%;
+}
+
+/* Home */
+.sk-home {
+  min-height: max(844px, 100svh);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 32px;
+  padding: 0 var(--gutter) 32px;
+}
+.sk-home__lines {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.sk-home__lines .sk {
+  height: 3rem;
+}
+.sk-home__card {
+  height: 284px;
+}
+@media (min-width: 1024px) {
+  .sk-home {
+    display: block;
+    position: relative;
+    min-height: max(900px, 100svh);
+    padding: 0;
+  }
+  .sk-home__lines {
+    position: absolute;
+    left: 40px;
+    top: 50%;
+    width: min(760px, 60vw);
+    transform: translateY(-50%);
+  }
+  .sk-home__lines .sk {
+    height: 4.5rem;
+  }
+  .sk-home__card {
+    position: absolute;
+    right: 40px;
+    bottom: 44px;
+    width: 256px;
+  }
+}
+
+/* Service template */
+.sk-svc-hero {
+  height: 844px;
+}
+.sk-svc-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  padding: 64px 20px;
+  min-height: 679px;
+}
+.sk-svc-intro__cols {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: 100%;
+  max-width: 300px;
+}
+.sk-svc-intro__strip {
+  height: 135px;
+  width: 100%;
+  max-width: 350px;
+}
+.sk-svc-faq {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 48px 20px 64px;
+  min-height: 649px;
+}
+.sk-svc-faq__rows {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.sk-svc-faq__rows .sk {
+  height: 1.75rem;
+}
+.sk-svc-faq__rows .sk:first-child {
+  height: 11rem;
+}
+.sk-svc-book {
+  min-height: 824px;
+  padding: 48px 20px 24px;
+  position: relative;
+}
+.sk-svc-book__panel {
+  height: 752px;
+}
+@media (min-width: 1024px) {
+  .sk-svc-hero {
+    height: 900px;
+  }
+  .sk-svc-intro {
+    min-height: 604px;
+    padding: 40px 20px 80px;
+    gap: 64px;
+  }
+  .sk-svc-intro__cols {
+    flex-direction: row;
+    max-width: 722px;
+    gap: 32px;
+  }
+  .sk-svc-intro__strip {
+    height: 147px;
+    max-width: none;
+  }
+  .sk-svc-faq {
+    padding: 80px 40px 120px;
+    gap: 80px;
+    min-height: 785px;
+  }
+  .sk-svc-faq__rows {
+    gap: 32px;
+  }
+  .sk-svc-book {
+    min-height: 900px;
+    padding: 160px 32px 136px;
+  }
+  .sk-svc-book__panel {
+    width: 736px;
+    max-width: 100%;
+    height: 604px;
+  }
+}
+
+/* Header + card list (blogs, services, contact) */
+.sk-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 160px var(--gutter) 48px;
+}
+.sk-head .sk--title {
+  width: min(100%, 22rem);
+  height: 4.5rem;
+}
+.sk-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  padding: 0 var(--gutter) 64px;
+}
+.sk-list .sk {
+  height: 216px;
+}
+.sk-list--cards .sk {
+  height: 20rem;
+}
+@media (min-width: 768px) {
+  .sk-list--cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1024px) {
+  .sk-head {
+    padding-top: 228px;
+  }
+  .sk-head .sk--title {
+    width: min(100%, 50rem);
+    height: 5rem;
+  }
+  .sk-list {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: 505px;
+    gap: 32px;
+    overflow: hidden;
+    padding-bottom: 100px;
+  }
+  .sk-list .sk {
+    height: 311px;
+  }
+  .sk-list--cards {
+    grid-auto-flow: row;
+    grid-auto-columns: auto;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+}
+
+/* About */
+.sk-about-gallery {
+  display: grid;
+  gap: 8px;
+}
+.sk-about-gallery .sk {
+  height: 434px;
+  border-radius: 0;
+}
+.sk-about-panel {
+  padding: 32px 20px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-height: 728px;
+}
+.sk-about-photos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 64px 20px;
+}
+.sk-about-photos .sk--media {
+  min-height: 340px;
+  max-width: 340px;
+}
+@media (min-width: 1024px) {
+  .sk-about-gallery {
+    grid-template-columns: 395fr 691fr 334fr;
+    column-gap: 10px;
+    height: 1330px;
+  }
+  .sk-about-gallery .sk {
+    height: 100%;
+  }
+  .sk-about-panel {
+    min-height: 976px;
+  }
+}
+
+/* Article + legal */
+.sk-article {
+  padding: 104px 20px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.sk-article .sk--media {
+  min-height: 233px;
+}
+.sk-legal {
+  padding: 144px 20px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.sk-legal__sections {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+@media (min-width: 1024px) {
+  .sk-article {
+    max-width: 533px;
+    margin-inline: auto;
+    padding: 300px 0 48px;
+    gap: 32px;
+  }
+  .sk-article .sk--media {
+    min-height: 355px;
+  }
+  .sk-legal {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 196px 55px 120px 40px;
+  }
+  .sk-legal__sections {
+    width: 544px;
+    margin-top: 197px;
+    gap: 40px;
+  }
+}

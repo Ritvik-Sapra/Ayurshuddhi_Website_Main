@@ -1,0 +1,18 @@
+Put photos/videos in the folder of the page they belong to, then set the path in the matching file in src/frontend/content/.
+Example: public/media/home/hero.mp4  ->  videoSrc: "/media/home/hero.mp4" in content/home.ts
+
+home/                 hero video + poster, featured card photo            (content/home.ts)
+ayurveda/             hero photo, intro video, booking background         (content/services.ts)
+panchakarma/          hero photo, intro video, booking background         (content/services.ts)
+services/             one photo per service card (9)                      (content/services.ts)
+about/gallery/        10 gallery photos                                   (content/about.ts)
+about/story/          story background photo                              (content/about.ts)
+about/practitioner/   4 practitioner photos                               (content/about.ts)
+about/testimonials/   testimonials background photo                       (content/about.ts)
+blogs/                one cover photo per blog card (5)                   (content/blogs.ts)
+blogs/dinacharya-daily-routine/   images inside the article              (content/blogs.ts)
+contact/              contact page background photo                       (content/contact.ts)
+footer/               footer photo                                        (components/layout/Footer.tsx)
+
+Tips: JPG/WebP for photos (hero poster under ~300 KB), MP4 under 2 MB for mobile video, lowercase names with dashes.
+Record each file's source and licence in public/ASSETS.md.
