@@ -25,16 +25,20 @@ html[data-scrolled] .nav-chip {
 html[data-scrolled] .nav-chip:hover {
   background: var(--color-green-dark);
 }
-/* Inside the overlay the chips sit on solid green. */
-.menu-dialog .nav-chip {
+/* Inside the menu the chips sit on solid green. */
+.radial-menu .nav-chip {
   background: var(--color-glass);
 }
-.menu-dialog .nav-chip:hover {
+.radial-menu .nav-chip:hover {
   background: rgb(255 251 231 / 0.16);
 }
 
-/* ---------- Menu overlay (<dialog>) ---------- */
-.menu-dialog {
+/*
+ * ---------- Radial menu (<dialog>) ----------
+ * The dialog itself is transparent; its .rm-bg layer is the green circle that RadialMenu
+ * (framer-motion) grows out of the menu button. See RadialMenu.tsx for the choreography.
+ */
+.radial-menu {
   position: fixed;
   inset: 0;
   width: 100%;
@@ -44,44 +48,21 @@ html[data-scrolled] .nav-chip:hover {
   margin: 0;
   padding: 0;
   border: 0;
-  background: var(--color-green);
+  overflow: hidden;
+  background: transparent;
   color: var(--color-cream);
   pointer-events: auto;
-  opacity: 0;
-  transform: translateY(-12px);
-  transition:
-    opacity var(--duration-base) ease-out,
-    transform var(--duration-base) var(--ease-out-expo),
-    overlay var(--duration-base) allow-discrete,
-    display var(--duration-base) allow-discrete;
 }
-.menu-dialog[open] {
-  opacity: 1;
-  transform: none;
+.radial-menu::backdrop {
+  background: transparent;
 }
-@starting-style {
-  .menu-dialog[open] {
-    opacity: 0;
-    transform: translateY(-12px);
-  }
-}
-.menu-dialog::backdrop {
-  background: var(--color-green);
-}
-/* The close button sits exactly where the menu button was, scrollbar included. */
-.menu-dialog .menu-close {
+/*
+ * Opening the menu removes the scrollbar, which would shift the fixed menu button. Both the
+ * button and the X sit --sbw further in so they stay exactly where the button was.
+ */
+.menu-trigger,
+.radial-menu .menu-close {
   right: calc(var(--nav-inset) + var(--sbw, 0px));
-}
-
-@keyframes menu-item-in {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-}
-.menu-dialog[open] .menu-item {
-  animation: menu-item-in var(--duration-slow) var(--ease-out-expo) both;
-  animation-delay: calc(var(--i, 0) * 40ms + 80ms);
 }
 
 /* ---------- Animated underline for text links ---------- */
@@ -185,8 +166,6 @@ html[data-scrolled] .nav-chip:hover {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .menu-dialog,
-  .menu-dialog[open] .menu-item,
   .faq-answer,
   .card-lift,
   .card-lift .card-arrow {

@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Short landscape viewports (phones on their side): layouts where height is the constraint. */
+@custom-variant short (@media (max-height: 30rem) and (orientation: landscape));
+
 /*
  * Design tokens. Values come from the Figma variables (file flFvuNGCfwXE3kjaJjZTqd).
  * Type sizes are fluid: exact Figma mobile value at 390px, exact desktop value at 1440px.
@@ -95,6 +98,8 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+  /* Anchor jumps, scrollIntoView and focus scrolling stop below the fixed nav chips. */
+  scroll-padding-top: var(--nav-height);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -104,7 +109,7 @@ html {
 }
 
 /*
- * Page scroll lock while the menu overlay is open. --sbw (set by MenuOverlay) is the
+ * Page scroll lock while the menu overlay is open. --sbw (set by RadialMenu) is the
  * scrollbar width, added back as padding so the page behind doesn't shift.
  */
 html:has(dialog[open]) {

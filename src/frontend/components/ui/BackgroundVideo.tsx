@@ -16,6 +16,7 @@ type BackgroundVideoProps = {
 const CROSSFADE_SECONDS = 1.5;
 
 function subscribe(callback: () => void) {
+  if (typeof window.matchMedia !== "function") return () => {};
   const queries = [
     window.matchMedia("(min-width: 768px)"),
     window.matchMedia("(prefers-reduced-motion: reduce)"),
@@ -27,6 +28,8 @@ function subscribe(callback: () => void) {
 type NetworkInformation = { saveData?: boolean };
 
 function getSnapshot() {
+  // Without matchMedia we can't honour reduced motion, so no video.
+  if (typeof window.matchMedia !== "function") return "off";
   const wide = window.matchMedia("(min-width: 768px)").matches;
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const saveData = (navigator as Navigator & { connection?: NetworkInformation }).connection
@@ -86,14 +89,17 @@ export function BackgroundVideo({
     setPosition(position + 1);
     // Once the fade has finished, reload the idle player with the clip after next.
     const finished = position;
-    swapTimer.current = setTimeout(() => {
-      players.current[finished % 2]?.pause();
-      setSlotTracks((tracks) => {
-        const updated: [number, number] = [tracks[0], tracks[1]];
-        updated[finished % 2] = finished + 2;
-        return updated;
-      });
-    }, CROSSFADE_SECONDS * 1000 + 200);
+    swapTimer.current = setTimeout(
+      () => {
+        players.current[finished % 2]?.pause();
+        setSlotTracks((tracks) => {
+          const updated: [number, number] = [tracks[0], tracks[1]];
+          updated[finished % 2] = finished + 2;
+          return updated;
+        });
+      },
+      CROSSFADE_SECONDS * 1000 + 200,
+    );
   }
 
   if (single) {
