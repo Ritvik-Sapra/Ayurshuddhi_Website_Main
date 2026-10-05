@@ -17,7 +17,7 @@ export default async function AboutPage() {
   const about = await getAbout();
   return (
     <>
-      <AboutGallery images={about.gallery} />
+      <AboutGallery desktop={about.gallery.desktop} mobile={about.gallery.mobile} />
       <AboutStory story={about.story} />
       <AboutPractitioner practitioner={about.practitioner} />
       <AboutTestimonials testimonials={about.testimonials} />
