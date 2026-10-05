@@ -66,11 +66,18 @@
   --text-eyebrow--line-height: 1.33;
   --text-eyebrow--letter-spacing: 0.04em;
 
-  /* Motion */
+  /* Motion (JS mirrors: frontend/lib/motion.ts) */
   --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Radial wipes (menu, service card opening). */
+  --ease-wipe: cubic-bezier(0.65, 0, 0.35, 1);
+  /* Small elements popping into place with a slight overshoot. */
+  --ease-soft-pop: cubic-bezier(0.34, 1.4, 0.64, 1);
   --duration-fast: 150ms;
   --duration-base: 250ms;
   --duration-slow: 400ms;
+  --duration-wipe: 700ms;
+  /* Longest fade allowed under prefers-reduced-motion. */
+  --duration-reduced: 200ms;
 
   /* Breakpoints: mobile-first, desktop layout starts at lg */
   --breakpoint-sm: 480px;
@@ -139,6 +146,11 @@ body {
   outline: 2px solid var(--color-accent);
   outline-offset: 3px;
   border-radius: var(--radius-sm);
+}
+
+/* Headings focused by script after a page transition are not controls: no focus ring. */
+[data-route-focus]:focus {
+  outline: none;
 }
 
 /* Skip link */

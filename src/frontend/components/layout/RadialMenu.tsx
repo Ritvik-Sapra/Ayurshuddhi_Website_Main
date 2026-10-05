@@ -8,10 +8,13 @@ import { menuContactLink, menuLinks } from "@/frontend/content/nav";
 import { LogoChip } from "@/frontend/components/layout/LogoChip";
 import { CloseIcon, MenuLinesIcon } from "@/frontend/components/ui/icons";
 import { cn } from "@/frontend/lib/cn";
+import {
+  coverRadius,
+  EASE_WIPE as EASE,
+  prefersReducedMotion,
+  WIPE_DURATION as REVEAL,
+} from "@/frontend/lib/motion";
 
-/** Seconds for the radial wipe. The dashes travel on the same curve so they arrive with it. */
-const REVEAL = 0.7;
-const EASE = [0.65, 0, 0.35, 1] as const;
 /** How much larger the dashes are once they reach the centre of the screen. */
 const DASH_SCALE = 2;
 
@@ -41,7 +44,7 @@ function measure(dialog: HTMLDialogElement, trigger: HTMLButtonElement): Geometr
   const height = dialog.clientHeight;
   const cx = rect.left + rect.width / 2;
   const cy = rect.top + rect.height / 2;
-  const radius = Math.ceil(Math.hypot(Math.max(cx, width - cx), Math.max(cy, height - cy))) + 2;
+  const radius = coverRadius(cx, cy, width, height);
   return {
     x: rect.left,
     y: rect.top,
@@ -50,18 +53,6 @@ function measure(dialog: HTMLDialogElement, trigger: HTMLButtonElement): Geometr
     from: `circle(0px at ${cx}px ${cy}px)`,
     to: `circle(${radius}px at ${cx}px ${cy}px)`,
   };
-}
-
-/**
- * Read when the menu is used, not during render: this component lives in the root layout, so a
- * blocked or missing matchMedia must never be able to crash it.
- */
-function prefersReducedMotion() {
-  try {
-    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  } catch {
-    return false;
-  }
 }
 
 function setStyles(elements: Iterable<HTMLElement>, styles: Partial<CSSStyleDeclaration>) {

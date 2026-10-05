@@ -1,7 +1,7 @@
-import Link from "next/link";
 import { cn } from "@/frontend/lib/cn";
 import { ArrowTile } from "@/frontend/components/ui/icons";
 import { MediaPlaceholder } from "@/frontend/components/ui/MediaPlaceholder";
+import { ServiceCardLink } from "@/frontend/components/cards/ServiceCardLink";
 
 type ServiceCardProps = {
   title: string;
@@ -17,7 +17,12 @@ type ServiceCardProps = {
   imageClassName?: string;
 };
 
-/** Figma: Card/Destination (ServiceCard). A photo slot above a dark bar with title and arrow. */
+/**
+ * Figma: Card/Destination (ServiceCard). A photo slot above a dark bar with title and arrow.
+ * Linked cards open their page through the radial card transition (see CardTransition.tsx),
+ * which measures `[data-service-card]` and copies the `.card-media` photo slot. Motion styles
+ * (reveal, parallax, hover) live in motion.css under "Service cards".
+ */
 export function ServiceCard({
   title,
   href,
@@ -31,8 +36,10 @@ export function ServiceCard({
   const Heading = headingLevel === 2 ? "h2" : "h3";
   return (
     <article
+      data-service-card
       className={cn(
-        "relative flex flex-col overflow-hidden rounded-sm bg-white/[0.01] backdrop-blur-[6px]",
+        // overflow-clip, not hidden: a scroll container here would freeze the photo's parallax.
+        "service-card relative flex flex-col overflow-clip rounded-sm bg-white/[0.01] backdrop-blur-[6px]",
         href &&
           "card-lift has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-4 has-[a:focus-visible]:outline-accent",
         className,
@@ -41,16 +48,22 @@ export function ServiceCard({
       <MediaPlaceholder
         label={imageLabel}
         src={imageSrc}
-        sizes="(min-width: 1024px) 256px, 350px"
-        className={cn("h-[204px] w-full shrink-0", imageClassName)}
+        // Cards render ~390px wide on desktop and the photo is scaled up to 1.12x, so request a wide source.
+        sizes="(min-width: 1024px) 480px, (min-width: 768px) 50vw, 100vw"
+        quality={90}
+        className={cn("card-media h-[204px] w-full shrink-0", imageClassName)}
       />
-      <div className="flex items-center gap-3 bg-scrim p-5 text-cream">
+      <div className="flex flex-1 items-center gap-3 bg-scrim p-5 text-cream">
         <div className="min-w-0 flex-1">
           <Heading className="text-h5">
             {href ? (
-              <Link href={href} className="after:absolute after:inset-0 after:content-['']">
+              <ServiceCardLink
+                href={href}
+                title={title}
+                className="after:absolute after:inset-0 after:content-['']"
+              >
                 {title}
-              </Link>
+              </ServiceCardLink>
             ) : (
               title
             )}

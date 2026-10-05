@@ -11,6 +11,8 @@ type MediaPlaceholderProps = {
   /** Mark as decorative (alt=""). Use for background imagery. */
   decorative?: boolean;
   sizes?: string;
+  /** Encoder quality (next.config.ts `images.qualities` lists the allowed values). */
+  quality?: number;
   /** Preload the image (LCP images only). */
   preload?: boolean;
   className?: string;
@@ -29,6 +31,7 @@ export function MediaPlaceholder({
   src,
   decorative = false,
   sizes = "100vw",
+  quality,
   preload = false,
   className,
   iconClassName,
@@ -50,6 +53,7 @@ export function MediaPlaceholder({
           alt={decorative ? "" : label}
           fill
           sizes={sizes}
+          quality={quality}
           preload={preload}
           className="object-cover"
         />

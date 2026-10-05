@@ -11,7 +11,7 @@ type ServiceIntroProps = {
 /** Figma: Intro. Cream section with the page's h1, two centred paragraphs and a video strip. */
 export function ServiceIntro({ title, intro, videoSrc, videoLabel }: ServiceIntroProps) {
   return (
-    <section className="flex flex-col items-center gap-8 bg-cream px-5 py-16 text-center text-green lg:gap-16 lg:pb-20 lg:pt-10">
+    <section className="flex flex-col items-center gap-8 bg-cream px-5 pb-16 pt-32 text-center text-green lg:gap-16 lg:pb-20 lg:pt-40">
       <h1 className="text-h1">{title}</h1>
       <div className="flex flex-col items-center gap-8 lg:flex-row lg:items-start">
         {intro.map((paragraph) => (

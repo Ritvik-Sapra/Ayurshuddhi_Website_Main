@@ -10,19 +10,13 @@
   width: 72px;
   height: 48px;
   border-radius: var(--radius-sm);
-  background: var(--color-glass);
+  /* Solid green at every scroll position so the chips stay readable over the cream pages. */
+  background: color-mix(in srgb, var(--color-green) 92%, transparent);
   -webkit-backdrop-filter: blur(2.5px);
   backdrop-filter: blur(2.5px);
   transition: background-color var(--duration-base) var(--ease-out-expo);
 }
 .nav-chip:hover {
-  background: rgb(255 251 231 / 0.16);
-}
-/* Once the page is scrolled the chips turn solid so they stay readable over light sections. */
-html[data-scrolled] .nav-chip {
-  background: color-mix(in srgb, var(--color-green) 92%, transparent);
-}
-html[data-scrolled] .nav-chip:hover {
   background: var(--color-green-dark);
 }
 /* Inside the menu the chips sit on solid green. */
@@ -87,29 +81,117 @@ html[data-scrolled] .nav-chip:hover {
   transform: scaleX(1);
 }
 
-/* ---------- Card hover lift ---------- */
+/*
+ * ---------- Card hover lift ----------
+ * Hover only where a real pointer can hover, so a tap on a touch screen never leaves a card
+ * stuck lifted. `[data-hover]` gives a frozen copy of the page (lib/pageSnapshot.ts) the same
+ * look as the hovered original.
+ */
 .card-lift {
   transition: transform var(--duration-base) var(--ease-out-expo);
-}
-.card-lift:hover {
-  transform: translateY(-4px);
 }
 .card-lift .card-arrow {
   transition: transform var(--duration-base) var(--ease-out-expo);
 }
-.card-lift:hover .card-arrow,
-.card-lift:focus-visible .card-arrow {
+.card-lift:focus-visible .card-arrow,
+.card-lift:has(a:focus-visible) .card-arrow {
   transform: translate(2px, -2px);
 }
+@media (hover: hover) and (pointer: fine) {
+  .card-lift:is(:hover, [data-hover]) {
+    transform: translateY(-4px);
+  }
+  .card-lift:is(:hover, [data-hover]) .card-arrow {
+    transform: translate(2px, -2px);
+  }
+}
 
-/* ---------- FAQ answer fade ---------- */
+/*
+ * ---------- Service cards ----------
+ * Three independent transform layers on the photo (or its placeholder icon), so they never
+ * fight: `scale` settles it in on reveal, `translate` is the scroll parallax, `transform` is the
+ * hover zoom. Photos sit at 1.12x so the parallax never shows an edge.
+ */
+.service-card .card-media {
+  view-timeline: --card-photo block;
+}
+.service-card .card-media > :is(img, svg) {
+  --media-scale: 1;
+  scale: var(--media-scale);
+  transition:
+    opacity 200ms ease-out,
+    transform var(--duration-slow) var(--ease-out-expo);
+}
+.service-card .card-media > img {
+  --media-scale: 1.12;
+}
+.service-card .card-arrow {
+  scale: 1;
+}
+@media (hover: hover) and (pointer: fine) {
+  .service-card:is(:hover, [data-hover]) .card-media > :is(img, svg) {
+    transform: scale(1.05);
+  }
+}
+@keyframes card-parallax {
+  from {
+    translate: 0 -10px;
+  }
+  to {
+    translate: 0 10px;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .service-card .card-media > :is(img, svg) {
+      animation: card-parallax linear both;
+      animation-timeline: --card-photo;
+      animation-range: cover;
+    }
+  }
+}
+
+/* ---------- FAQ drop-down ----------
+ * Panels animate grid-template-rows 0fr <-> 1fr (the only way to ease to auto height in CSS).
+ * Opening one panel closes the previous one in the same transition, so they slide in step. */
 @keyframes fade-in {
   from {
     opacity: 0;
   }
 }
+.faq-item {
+  transition:
+    background-color 0.45s var(--ease-out-expo),
+    padding 0.45s var(--ease-out-expo);
+}
+.faq-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition:
+    grid-template-rows 0.45s var(--ease-out-expo),
+    visibility 0s linear 0.45s;
+}
+.faq-panel[data-open="true"] {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition-delay: 0s;
+}
+.faq-panel > div {
+  min-height: 0;
+  overflow: hidden;
+}
 .faq-answer {
-  animation: fade-in var(--duration-fast) ease-out;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition:
+    opacity 0.3s ease-out,
+    transform 0.45s var(--ease-out-expo);
+}
+.faq-panel[data-open="true"] .faq-answer {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.12s;
 }
 
 /* ---------- Map pins (decorative) ---------- */
@@ -166,9 +248,12 @@ html[data-scrolled] .nav-chip:hover {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .faq-item,
+  .faq-panel,
   .faq-answer,
   .card-lift,
-  .card-lift .card-arrow {
+  .card-lift .card-arrow,
+  .service-card .card-media > :is(img, svg) {
     animation: none;
     transition: none;
     transform: none;
@@ -176,5 +261,247 @@ html[data-scrolled] .nav-chip:hover {
   .map-pin::after {
     animation: none;
     opacity: 0;
+  }
+}
+
+/* ---------- Masked words (MaskedWords.tsx) ----------
+ * The padding gives ascenders and descenders room inside the mask; the negative margin takes it
+ * back out of the layout. The mask only clips while an entrance is playing. */
+.mask-word {
+  display: inline-block;
+  padding: 0.14em 0.06em;
+  margin: -0.14em -0.06em;
+}
+.mask-word__inner {
+  display: inline-block;
+}
+
+/*
+ * ---------- /services entrance and scroll reveals ----------
+ * ServicesStage.tsx sets these on the section from JS only (an inline script before first
+ * paint, or a layout effect on client navigation), so without JS nothing is ever hidden:
+ *   data-motion="full|short|reduce"  card reveal style; cards stay hidden until data-revealed
+ *   data-intro="full|short|reduce"   heading and nav entrance; removed once it has played
+ *   data-entry="document|client"     the nav only fades in on a full page load
+ * Hidden states carry no transition, so applying them is instant; reveals transition out.
+ *
+ * Full (first visit, ~1.4s): the headline words rise out of their masks (h1 legible by
+ * ~300ms), the lede fades up, the nav fades in; from 320ms the visible cards rise in a wave
+ * left to right, each photo opening upward out of its dark bar as it settles from 1.2x, the
+ * arrow tile popping in last. Later rows play the same wave as they scroll into view.
+ * Short (later visits): cards only, a quick fade-up. Reduce: 200ms opacity fades.
+ */
+.svc-glow {
+  position: absolute;
+  inset: -40% -30%;
+  z-index: -1;
+  pointer-events: none;
+}
+/* A warm haze behind the heading that breathes in and out, 6s each way. */
+.svc-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      40% 50% at 38% 48%,
+      color-mix(in srgb, var(--color-accent) 16%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      34% 44% at 64% 56%,
+      color-mix(in srgb, var(--color-cream) 7%, transparent),
+      transparent 70%
+    );
+}
+@keyframes glow-breathe {
+  to {
+    transform: scale(1.08) rotate(4deg);
+  }
+}
+@keyframes rise-in {
+  from {
+    translate: 0 135%;
+  }
+}
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    translate: 0 14px;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .svc-glow::before {
+    animation: glow-breathe 6s ease-in-out infinite alternate;
+  }
+}
+
+@media screen {
+  /* Heading, lede, glow and nav */
+  [data-intro="full"] .mask-word {
+    overflow: clip;
+  }
+  [data-intro="full"] .mask-word__inner {
+    animation: rise-in 650ms var(--ease-out-expo) both;
+    animation-delay: calc(var(--intro-offset, 0ms) + var(--word, 0) * 30ms);
+  }
+  [data-intro="full"] .svc-lede {
+    animation: fade-up 700ms var(--ease-out-expo) both;
+    animation-delay: calc(var(--intro-offset, 0ms) + 220ms);
+  }
+  [data-intro="full"] .svc-glow {
+    animation: fade-in 1400ms ease-out var(--intro-offset, 0ms) both;
+  }
+  [data-intro="short"] .svc-glow {
+    animation: fade-in 600ms ease-out var(--intro-offset, 0ms) both;
+  }
+  [data-intro="reduce"] :is(.svc-title, .svc-lede) {
+    animation: fade-in var(--duration-reduced) ease-out both;
+  }
+  body:has([data-intro="full"][data-entry="document"]) > header {
+    animation: fade-in 600ms ease-out 120ms both;
+  }
+  body:has([data-intro="short"][data-entry="document"]) > header {
+    animation: fade-in 300ms ease-out both;
+  }
+  body:has([data-intro="reduce"][data-entry="document"]) > header {
+    animation: fade-in var(--duration-reduced) ease-out both;
+  }
+
+  /* Cards: hidden states */
+  [data-motion] [data-reveal]:not([data-revealed]) {
+    opacity: 0;
+  }
+  [data-motion="full"] [data-reveal]:not([data-revealed]) {
+    transform: translateY(40px);
+  }
+  [data-motion="short"] [data-reveal]:not([data-revealed]) {
+    transform: translateY(16px);
+  }
+  [data-motion="full"] [data-reveal]:not([data-revealed]) .card-media {
+    clip-path: inset(100% 0 0 0);
+  }
+  [data-motion="full"] [data-reveal]:not([data-revealed]) .card-media > :is(img, svg) {
+    scale: calc(var(--media-scale) * 1.2);
+  }
+  [data-motion="full"] [data-reveal]:not([data-revealed]) .card-arrow {
+    opacity: 0;
+    scale: 0.4;
+  }
+  /* Promoted while waiting and revealing; dropped once data-revealed="done". */
+  [data-motion]:not([data-motion="reduce"]) [data-reveal]:not([data-revealed="done"]) {
+    will-change: opacity, transform;
+  }
+
+  /* Cards: reveals (--reveal-delay is each card's place in the wave) */
+  [data-motion="full"] [data-reveal][data-revealed] {
+    transition:
+      opacity 700ms ease-out var(--reveal-delay, 0ms),
+      transform 1000ms var(--ease-out-expo) var(--reveal-delay, 0ms);
+  }
+  [data-motion="full"] [data-reveal][data-revealed] .card-media {
+    clip-path: inset(0 0 0 0);
+    transition: clip-path 900ms var(--ease-wipe) calc(var(--reveal-delay, 0ms) + 80ms);
+  }
+  [data-motion="full"] [data-reveal][data-revealed] .card-media > :is(img, svg) {
+    transition:
+      opacity 200ms ease-out,
+      transform var(--duration-slow) var(--ease-out-expo),
+      scale 1100ms var(--ease-out-expo) calc(var(--reveal-delay, 0ms) + 80ms);
+  }
+  [data-motion="full"] [data-reveal][data-revealed] .card-arrow {
+    transition:
+      transform var(--duration-base) var(--ease-out-expo),
+      opacity 300ms ease-out calc(var(--reveal-delay, 0ms) + 450ms),
+      scale 600ms var(--ease-soft-pop) calc(var(--reveal-delay, 0ms) + 450ms);
+  }
+  [data-motion="short"] [data-reveal][data-revealed] {
+    transition:
+      opacity 450ms ease-out var(--reveal-delay, 0ms),
+      transform 600ms var(--ease-out-expo) var(--reveal-delay, 0ms);
+  }
+  [data-motion="reduce"] [data-reveal][data-revealed] {
+    transition: opacity var(--duration-reduced) ease-out var(--reveal-delay, 0ms);
+  }
+}
+
+/*
+ * ---------- Card transition overlay (CardTransition.tsx) ----------
+ * Below the nav chips (z-40), which stay put as a fixed anchor while the page changes.
+ * Layers: a frozen copy of the old page; a circle in the card's dark bar colour holding the
+ * card's photo, which opens to fill the screen; loading dots for slow pages.
+ */
+.card-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: none;
+  overflow: hidden;
+}
+.card-transition[data-state] {
+  display: block;
+}
+.card-transition[data-state="crossfade"] {
+  pointer-events: none;
+}
+.card-transition[data-state="fade"] .ct-circle {
+  display: none;
+}
+.ct-snapshot,
+.ct-circle,
+.ct-bar,
+.ct-photo,
+.ct-media {
+  position: absolute;
+  inset: 0;
+}
+.ct-snapshot {
+  overflow: hidden;
+  background: var(--color-white);
+}
+/* The card's bar: its scrim over the page green. */
+.ct-bar {
+  background: linear-gradient(var(--color-scrim), var(--color-scrim)), var(--color-green);
+}
+.ct-media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.ct-dots {
+  position: absolute;
+  top: calc(50% + 64px);
+  left: 50%;
+  display: flex;
+  gap: 8px;
+  translate: -50% 0;
+  opacity: 0;
+  transition: opacity var(--duration-slow) ease-out;
+}
+.card-transition[data-waiting] .ct-dots {
+  opacity: 1;
+}
+.ct-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--color-cream);
+  opacity: 0.4;
+}
+@keyframes ct-dot {
+  50% {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .card-transition[data-waiting] .ct-dots span {
+    animation: ct-dot 1.2s ease-in-out infinite;
+  }
+  .ct-dots span:nth-child(2) {
+    animation-delay: 150ms;
+  }
+  .ct-dots span:nth-child(3) {
+    animation-delay: 300ms;
   }
 }
