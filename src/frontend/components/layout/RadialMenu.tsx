@@ -4,9 +4,17 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { stagger, useAnimate, type AnimationSequence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { menuContactLink, menuLinks } from "@/frontend/content/nav";
+import {
+  menuColumns,
+  menuContactLink,
+  menuMetaLinks,
+  menuPortal,
+  type NavLink,
+} from "@/frontend/content/nav";
+import { site } from "@/frontend/content/site";
 import { LogoChip } from "@/frontend/components/layout/LogoChip";
 import { CloseIcon, MenuLinesIcon } from "@/frontend/components/ui/icons";
+import { MenuBotanicals } from "@/frontend/components/ui/MenuBotanicals";
 import { cn } from "@/frontend/lib/cn";
 import {
   coverRadius,
@@ -57,6 +65,19 @@ function measure(dialog: HTMLDialogElement, trigger: HTMLButtonElement): Geometr
 
 function setStyles(elements: Iterable<HTMLElement>, styles: Partial<CSSStyleDeclaration>) {
   for (const element of elements) Object.assign(element.style, styles);
+}
+
+/** One big uppercase menu link; the current page gets a dot beside it (see .rm-nav-link). */
+function MenuLink({ link, pathname }: { link: NavLink; pathname: string }) {
+  return (
+    <Link
+      href={link.href}
+      aria-current={pathname === link.href ? "page" : undefined}
+      className="rm-nav-link link-underline block whitespace-nowrap text-h6 font-semibold uppercase tracking-wide text-cream"
+    >
+      {link.label}
+    </Link>
+  );
 }
 
 /**
@@ -280,7 +301,12 @@ export function RadialMenu() {
           if (link && event.button === 0 && !newTab) void closeWithAnimation(1, link.href);
         }}
       >
-        <div aria-hidden="true" className="rm-bg absolute inset-0 bg-green" />
+        {/* The circle that wipes open: a lighter green frame around a darker panel with the art. */}
+        <div aria-hidden="true" className="rm-bg absolute inset-0 bg-green">
+          <div className="rm-panel absolute inset-3 overflow-hidden rounded-sm bg-green-dark lg:inset-5">
+            <MenuBotanicals />
+          </div>
+        </div>
 
         <div
           aria-hidden="true"
@@ -313,35 +339,72 @@ export function RadialMenu() {
 
         {/*
           The links sit between the top chips and "Contact us", centred when they fit and
-          scrollable when they don't, so nothing is clipped or covered. Landscape phones get two
-          columns so all seven fit without scrolling.
+          scrollable when they don't, so nothing is clipped or covered. Three columns from md up
+          (and on landscape phones), one stacked column on narrow screens.
         */}
         <nav
           aria-label="Menu"
-          className="absolute inset-x-0 top-(--nav-height) bottom-24 flex overflow-y-auto overscroll-contain short:top-20 short:bottom-22"
+          className="absolute inset-x-0 top-(--nav-height) bottom-44 flex overflow-y-auto overscroll-contain md:bottom-32 short:top-20 short:bottom-22"
         >
-          <ul className="m-auto flex flex-col items-center gap-3 px-(--gutter) py-4 short:grid short:grid-flow-col short:grid-rows-4 short:justify-items-center short:gap-x-10 short:gap-y-1 lg:gap-4">
-            {menuLinks.map((link) => (
-              <li key={link.label} className="rm-link">
-                <Link
-                  href={link.href}
-                  aria-current={pathname === link.href ? "page" : undefined}
-                  className="link-underline block whitespace-nowrap text-h5 text-cream short:text-h6"
-                >
-                  {link.label}
-                </Link>
-              </li>
+          <div className="m-auto grid grid-cols-1 gap-x-16 gap-y-3 px-(--gutter) py-4 text-center md:grid-cols-3 md:items-start short:grid-cols-3 short:gap-x-10 lg:gap-x-24">
+            {menuColumns.map((column, index) => (
+              <ul key={column[0]?.label} className="flex flex-col items-center gap-3 lg:gap-5">
+                {column.map((link) => (
+                  <li key={link.label} className="rm-link">
+                    <MenuLink link={link} pathname={pathname} />
+                  </li>
+                ))}
+                {index === menuColumns.length - 1 ? (
+                  <li className="rm-link mt-3 rounded-sm bg-glass-strong px-8 py-5 lg:px-10">
+                    <p className="text-h6 font-semibold uppercase tracking-wide text-cream short:text-body-l">
+                      {menuPortal.title}
+                    </p>
+                    <ul className="mt-3 flex flex-col items-center gap-2 text-small uppercase tracking-wide">
+                      {menuPortal.links.map((link) => (
+                        <li key={link.label}>
+                          <Link href={link.href} className="link-underline block py-1 text-cream">
+                            {link.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                ) : null}
+              </ul>
             ))}
-          </ul>
+          </div>
         </nav>
 
-        <Link
-          href={menuContactLink.href}
-          aria-current={pathname === menuContactLink.href ? "page" : undefined}
-          className="rm-chrome absolute bottom-10 right-12 py-3 text-body font-bold text-accent underline decoration-accent decoration-2 underline-offset-4 transition-colors duration-150 hover:text-white lg:right-24"
-        >
-          {menuContactLink.label}
-        </Link>
+        <div className="rm-chrome absolute inset-x-0 bottom-8 flex flex-col items-center gap-3 px-(--gutter) text-center short:bottom-4 lg:bottom-12">
+          <Link
+            href={menuContactLink.href}
+            aria-current={pathname === menuContactLink.href ? "page" : undefined}
+            className="py-1 text-body text-cream underline decoration-1 underline-offset-4 transition-colors duration-150 hover:text-accent"
+          >
+            {menuContactLink.label}
+          </Link>
+          <ul className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-eyebrow uppercase text-cream short:hidden">
+            {menuMetaLinks.map((link) => (
+              <li key={link.label} className="flex items-center gap-3">
+                <Link href={link.href} className="py-1 transition-colors hover:text-accent">
+                  {link.label}
+                </Link>
+                <span aria-hidden="true">|</span>
+              </li>
+            ))}
+            <li className="flex items-center gap-3">
+              <a href={site.phoneHref} className="py-1 transition-colors hover:text-accent">
+                Ph: {site.phone}
+              </a>
+              <span aria-hidden="true">|</span>
+            </li>
+            <li>
+              <a href={`mailto:${site.email}`} className="py-1 transition-colors hover:text-accent">
+                Email: {site.email}
+              </a>
+            </li>
+          </ul>
+        </div>
       </dialog>
     </>
   );
