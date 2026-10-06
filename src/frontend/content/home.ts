@@ -20,12 +20,12 @@ export const home = {
      * With nothing set, the dark placeholder background is shown.
      */
     videoSources: [
-      "https://pub-fe7d6537004a4bd49472a6861a9a1224.r2.dev/videos/AdobeStock_2185762968.mp4",
-      "https://pub-fe7d6537004a4bd49472a6861a9a1224.r2.dev/videos/video2.mp4",
+      "https://pub-fe7d6537004a4bd49472a6861a9a1224.r2.dev/videos/landing-page-videos/videos_AdobeStock_2185762968.mp4",
+      "https://pub-fe7d6537004a4bd49472a6861a9a1224.r2.dev/videos/landing-page-videos/videos_video2.mp4",
     ] as readonly string[],
     videoSourcesMobile: [
-      "https://pub-fe7d6537004a4bd49472a6861a9a1224.r2.dev/videos/AdobeStock_2185762968.mp4",
-      "https://pub-fe7d6537004a4bd49472a6861a9a1224.r2.dev/videos/video2.mp4",
+      "https://pub-fe7d6537004a4bd49472a6861a9a1224.r2.dev/videos/landing-page-videos/videos_AdobeStock_2185762968.mp4",
+      "https://pub-fe7d6537004a4bd49472a6861a9a1224.r2.dev/videos/landing-page-videos/videos_video2.mp4",
     ] as readonly string[],
     posterSrc: undefined as string | undefined,
     posterAlt: "Sunlight streaming through a green forest",

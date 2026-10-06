@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getServiceDetail } from "@/frontend/content";
-import { serviceSlugs } from "@/frontend/content/services";
+import { bookingImageSrc, serviceSlugs } from "@/frontend/content/services";
 import { BookingSection } from "@/frontend/components/sections/service/BookingSection";
 import { ServiceFaq } from "@/frontend/components/sections/service/ServiceFaq";
-import { ServiceHero } from "@/frontend/components/sections/service/ServiceHero";
 import { ServiceIntro } from "@/frontend/components/sections/service/ServiceIntro";
 
 // Only the services in content/services.ts exist; anything else is a 404.
@@ -33,7 +32,6 @@ export default async function ServicePage({ params }: PageProps<"/[service]">) {
 
   return (
     <>
-      <ServiceHero imageLabel={detail.heroImageLabel} pins={detail.pins} />
       <ServiceIntro
         title={detail.title}
         intro={detail.intro}
@@ -41,7 +39,11 @@ export default async function ServicePage({ params }: PageProps<"/[service]">) {
         videoLabel={`${detail.title} therapy in progress`}
       />
       <ServiceFaq items={detail.faq} />
-      <BookingSection service={detail.slug} imageLabel={`${detail.title} consultation room`} />
+      <BookingSection
+        service={detail.slug}
+        imageLabel={`${detail.title} consultation room`}
+        imageSrc={bookingImageSrc}
+      />
     </>
   );
 }

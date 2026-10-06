@@ -11,7 +11,7 @@ type AccordionProps = {
 };
 
 /**
- * Figma: FAQ/Item. One panel open at a time, first open by default.
+ * Figma: FAQ/Item. One panel open at a time, first open by default. Panels slide open/closed together (see .faq-panel).
  * Each header is a real button with aria-expanded; panels are labelled regions.
  */
 export function Accordion({ items, className }: AccordionProps) {
@@ -29,8 +29,8 @@ export function Accordion({ items, className }: AccordionProps) {
           <li
             key={item.question}
             className={cn(
-              "flex flex-col gap-5 rounded-sm transition-colors duration-150 ease-out",
-              open ? "bg-green p-4 text-cream" : "text-green",
+              "faq-item flex flex-col rounded-sm",
+              open ? "bg-green p-4 text-cream" : "p-0 text-green",
             )}
           >
             <h3>
@@ -53,10 +53,19 @@ export function Accordion({ items, className }: AccordionProps) {
                 <ChevronTile direction={open ? "up" : "down"} />
               </button>
             </h3>
-            <div id={panelId} role="region" aria-labelledby={buttonId} hidden={!open}>
-              <p className="faq-answer mx-auto max-w-[318px] text-center text-body">
-                {item.answer}
-              </p>
+            <div
+              id={panelId}
+              role="region"
+              aria-labelledby={buttonId}
+              data-open={open}
+              inert={!open}
+              className="faq-panel"
+            >
+              <div>
+                <p className="faq-answer mx-auto max-w-[318px] pt-5 text-center text-body">
+                  {item.answer}
+                </p>
+              </div>
             </div>
           </li>
         );
