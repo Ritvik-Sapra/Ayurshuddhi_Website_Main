@@ -19,12 +19,39 @@
 .nav-chip:hover {
   background: var(--color-green-dark);
 }
-/* Inside the menu the chips sit on solid green. */
+/* Inside the menu the chips are bare: just the logo and the X on the dark panel. */
 .radial-menu .nav-chip {
-  background: var(--color-glass);
+  background: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
 }
 .radial-menu .nav-chip:hover {
-  background: rgb(255 251 231 / 0.16);
+  background: var(--color-glass);
+}
+/* The lighter green frame around the dark panel glows softly inwards. */
+.radial-menu .rm-panel {
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--color-cream) 14%, transparent),
+    0 0 24px 6px color-mix(in srgb, var(--color-cream) 10%, transparent);
+}
+/* Menu links: the current page gets a dot to its left instead of a permanent underline. */
+.rm-nav-link::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: calc(100% + 0.75rem);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-cream);
+  transform: translateY(-50%) scale(0);
+  transition: transform var(--duration-base) var(--ease-out-expo);
+}
+.rm-nav-link[aria-current="page"]::before {
+  transform: translateY(-50%) scale(1);
+}
+.rm-nav-link[aria-current="page"]:not(:hover, :focus-visible)::after {
+  transform: scaleX(0);
 }
 
 /*
