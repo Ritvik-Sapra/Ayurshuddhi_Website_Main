@@ -362,9 +362,9 @@
 }
 @media (min-width: 1024px) {
   .sk-about-gallery {
-    grid-template-columns: 395fr 691fr 334fr;
-    column-gap: 10px;
-    height: 1330px;
+    grid-template-columns: 490fr 458fr 476fr;
+    column-gap: 8px;
+    height: 1368px;
   }
   .sk-about-gallery .sk {
     height: 100%;

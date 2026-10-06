@@ -1,20 +1,33 @@
 import type { GalleryImage } from "@/frontend/content/about";
 import { MediaPlaceholder } from "@/frontend/components/ui/MediaPlaceholder";
 
-/** Aspect ratios from the Figma frames. Mobile shows five photos, desktop ten in three columns. */
-const mobileRatios = ["390/434", "390/434", "390/324", "390/324", "390/360"];
-const columns: { widthFr: number; ratio: string; from: number; count: number }[] = [
-  { widthFr: 395, ratio: "395/436", from: 0, count: 3 },
-  { widthFr: 691, ratio: "691/330", from: 3, count: 4 },
-  { widthFr: 334, ratio: "334/436", from: 7, count: 3 },
+/** Frame sizes (width/height) from the Figma "Gallery (scroll stack)" frame, top to bottom. */
+const mobileRatios = ["390/260", "390/260", "390/288", "390/260", "390/260", "390/260"];
+
+/**
+ * Frame sizes from the Figma "Gallery (masonry)" frame (1440x1368, 8px gaps). Each column is
+ * filled top to bottom and every column ends at the same height, so the widths set the grid
+ * and each photo keeps its own aspect ratio.
+ */
+const columns: { widthFr: number; ratios: string[] }[] = [
+  { widthFr: 490, ratios: ["490/327", "490/327", "490/327", "490/363"] },
+  { widthFr: 458, ratios: ["458/305", "458/306", "458/305", "458/428"] },
+  { widthFr: 476, ratios: ["476/318", "476/318", "476/351", "476/357"] },
 ];
 
-/** Figma: Gallery. A stacked list on mobile and a three-column masonry on desktop. */
-export function AboutGallery({ images }: { images: GalleryImage[] }) {
+type AboutGalleryProps = {
+  /** Twelve photos in column order (three columns of four). */
+  desktop: GalleryImage[];
+  /** Six photos for the mobile stack. */
+  mobile: GalleryImage[];
+};
+
+/** Figma: Gallery. A stacked list of six on mobile and a three-column masonry of twelve on desktop. */
+export function AboutGallery({ desktop, mobile }: AboutGalleryProps) {
   return (
     <section aria-label="Photo gallery">
       <div className="flex flex-col gap-2 lg:hidden">
-        {images.slice(0, mobileRatios.length).map((image, index) => (
+        {mobile.slice(0, mobileRatios.length).map((image, index) => (
           <MediaPlaceholder
             key={image.label}
             label={image.label}
@@ -28,21 +41,25 @@ export function AboutGallery({ images }: { images: GalleryImage[] }) {
       </div>
 
       <div
-        className="hidden items-start gap-x-2.5 lg:grid"
+        className="hidden items-start gap-x-2 lg:grid"
         style={{ gridTemplateColumns: columns.map((column) => `${column.widthFr}fr`).join(" ") }}
       >
-        {columns.map((column) => (
-          <div key={column.from} className="flex flex-col gap-2">
-            {images.slice(column.from, column.from + column.count).map((image) => (
-              <MediaPlaceholder
-                key={image.label}
-                label={image.label}
-                src={image.src}
-                sizes="(min-width: 1024px) 45vw, 100vw"
-                className="w-full"
-                style={{ aspectRatio: column.ratio }}
-              />
-            ))}
+        {columns.map((column, columnIndex) => (
+          <div key={column.widthFr} className="flex flex-col gap-2">
+            {column.ratios.map((ratio, rowIndex) => {
+              const image = desktop[columnIndex * 4 + rowIndex];
+              if (!image) return null;
+              return (
+                <MediaPlaceholder
+                  key={image.label}
+                  label={image.label}
+                  src={image.src}
+                  sizes="(min-width: 1024px) 34vw, 100vw"
+                  className="w-full"
+                  style={{ aspectRatio: ratio }}
+                />
+              );
+            })}
           </div>
         ))}
       </div>
