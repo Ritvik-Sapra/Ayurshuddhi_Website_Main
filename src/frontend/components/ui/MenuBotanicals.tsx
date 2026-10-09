@@ -50,17 +50,8 @@ function Bamboo({ className }: { className?: string }) {
   );
 }
 
-/** Four-point sparkle. */
-function Sparkle({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 40 40" aria-hidden="true" className={cn("fill-cream/20", className)}>
-      <path d="M20 0C21.5 12 28 18.5 40 20C28 21.5 21.5 28 20 40C18.5 28 12 21.5 0 20C12 18.5 18.5 12 20 0Z" />
-    </svg>
-  );
-}
-
 /**
- * Decorative line art behind the menu links: ginkgo leaves, bamboo and a sparkle. Purely
+ * Decorative line art behind the menu links: ginkgo leaves and bamboo. Purely
  * ornamental, so it is aria-hidden and ignores the pointer.
  */
 export function MenuBotanicals() {
@@ -71,7 +62,6 @@ export function MenuBotanicals() {
       <GinkgoLeaf className="absolute -top-8 right-1/4 w-40 rotate-180 opacity-15 lg:w-60" />
       <Bamboo className="absolute -bottom-10 right-2 h-3/4 opacity-20" />
       <Bamboo className="absolute -bottom-10 right-16 hidden h-1/2 opacity-15 lg:block" />
-      <Sparkle className="absolute bottom-12 right-8 size-8 lg:right-10 lg:size-10" />
     </div>
   );
 }
