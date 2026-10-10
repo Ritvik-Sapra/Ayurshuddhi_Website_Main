@@ -2,7 +2,6 @@ export const profilePage = {
   eyebrow: "User Portal",
   welcome: "Welcome back,",
   intro: "Your consultations, treatment plans and details, all in one place.",
-  photoLabel: "A calm, softly lit corner of the clinic with plants and natural light",
   details: {
     heading: "Your details",
     labels: {

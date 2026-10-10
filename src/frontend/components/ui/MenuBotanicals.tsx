@@ -1,7 +1,7 @@
 import { cn } from "@/frontend/lib/cn";
 
 /** Fan-shaped ginkgo leaf with its veins, drawn upright from its stem at (0, 0). */
-function GinkgoLeaf({ className }: { className?: string }) {
+export function GinkgoLeaf({ className }: { className?: string }) {
   const veins = Array.from({ length: 11 }, (_, i) => -50 + i * 10);
   return (
     <svg

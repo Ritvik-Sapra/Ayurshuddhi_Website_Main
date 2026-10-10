@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getServiceDetail } from "@/frontend/content";
-import { bookingImageSrc, serviceSlugs } from "@/frontend/content/services";
+import { bookingImageSrc, serviceSlugs, serviceStripSrc } from "@/frontend/content/services";
 import { BookingSection } from "@/frontend/components/sections/service/BookingSection";
 import { ServiceFaq } from "@/frontend/components/sections/service/ServiceFaq";
 import { ServiceIntro } from "@/frontend/components/sections/service/ServiceIntro";
@@ -35,8 +35,8 @@ export default async function ServicePage({ params }: PageProps<"/[service]">) {
       <ServiceIntro
         title={detail.title}
         intro={detail.intro}
-        videoSrc={detail.videoSrc}
-        videoLabel={`${detail.title} therapy in progress`}
+        imageSrc={serviceStripSrc}
+        imageLabel={`Herbs, oils and a mortar and pestle for ${detail.title}`}
       />
       <ServiceFaq items={detail.faq} />
       <BookingSection

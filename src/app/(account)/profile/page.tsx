@@ -3,6 +3,7 @@ import { getProfilePage } from "@/frontend/content";
 import { mockProfile } from "@/frontend/content/profile";
 import { ProfileContent } from "@/frontend/components/sections/profile/ProfileContent";
 import { ProfileHero } from "@/frontend/components/sections/profile/ProfileHero";
+import { MenuBotanicals } from "@/frontend/components/ui/MenuBotanicals";
 
 export const metadata: Metadata = {
   title: "Your Profile",
@@ -18,7 +19,8 @@ export default async function ProfilePage() {
   // TODO(backend): load the signed-in member here instead of `mockProfile`.
   const profile = mockProfile;
   return (
-    <>
+    <div className="relative isolate bg-green-dark">
+      <MenuBotanicals />
       <ProfileHero
         eyebrow={profilePage.eyebrow}
         welcome={profilePage.welcome}
@@ -26,6 +28,6 @@ export default async function ProfilePage() {
         intro={profilePage.intro}
       />
       <ProfileContent profile={profile} copy={profilePage} />
-    </>
+    </div>
   );
 }

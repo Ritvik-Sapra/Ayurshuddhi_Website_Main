@@ -1,5 +1,4 @@
 export const signUpPage = {
-  photoLabel: "A calm, softly lit corner of the clinic with plants and natural light",
   benefits: {
     eyebrow: "Why join",
     title: "Your wellness, in one place",

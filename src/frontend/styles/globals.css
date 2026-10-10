@@ -57,6 +57,9 @@
   --text-title: clamp(3.75rem, 3.471rem + 1.1429vw, 4.5rem);
   --text-title--line-height: 1.13;
   --text-title--letter-spacing: -0.02em;
+  /* Practitioner name (Figma: 52 / 60). */
+  --text-name: 3.25rem;
+  --text-name--line-height: 1.154;
   --text-h2: 3rem;
   --text-h2--line-height: 1.17;
   --text-h2--letter-spacing: -0.02em;
@@ -78,6 +81,9 @@
   --text-body--line-height: 1.5;
   --text-small: 0.875rem;
   --text-small--line-height: 1.43;
+  /* Large faint step numbers (About story columns). */
+  --text-numeral: 3.5rem;
+  --text-numeral--line-height: 1;
   --text-eyebrow: 0.75rem;
   --text-eyebrow--line-height: 1.33;
   --text-eyebrow--letter-spacing: 0.04em;
@@ -117,6 +123,12 @@
   --breakpoint-lg: 1024px;
   --breakpoint-xl: 1280px;
   --breakpoint-2xl: 1536px;
+}
+
+/* Playfair Display for the testimonials heading and avatar initials only. Inline so the utility reads
+   --font-playfair where it is used (AboutTestimonials.tsx sets it), not at :root where it is undefined. */
+@theme inline {
+  --font-serif: var(--font-playfair), ui-serif, serif;
 }
 
 :root {

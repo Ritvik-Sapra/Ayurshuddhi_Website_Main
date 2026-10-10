@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 export default async function LoginPage() {
   const page = await getSignInPage();
   return (
-    <AccountShell imageLabel={page.photoLabel} className="items-center px-6 py-16 lg:py-40">
+    <AccountShell className="items-center px-6 py-16 lg:py-40">
       <GlassCard
         as="section"
         aria-labelledby="signin-heading"

@@ -169,3 +169,47 @@ export function CheckCircleIcon({ className, ...props }: IconProps) {
     </svg>
   );
 }
+
+const lineIcon = {
+  viewBox: "0 0 28 28",
+  width: 28,
+  height: 28,
+  fill: "none",
+  "aria-hidden": true,
+} as const;
+const lineStroke = {
+  className: "stroke-green",
+  strokeWidth: 1.5,
+  strokeLinecap: "round",
+  strokeLinejoin: "round",
+} as const;
+
+/** Figma: Practitioner > Credential icon (mountains): training under Himalayan Gurus. */
+export function MountainIcon({ className, ...props }: IconProps) {
+  return (
+    <svg {...lineIcon} className={cn("shrink-0", className)} {...props}>
+      <path d="M3 22L10.5 9L15 16.5L18 12L25 22H3Z" {...lineStroke} />
+    </svg>
+  );
+}
+
+/** Figma: Practitioner > Credential icon (scroll): the Master's degree. */
+export function ScrollIcon({ className, ...props }: IconProps) {
+  return (
+    <svg {...lineIcon} className={cn("shrink-0", className)} {...props}>
+      <path d="M8 4H20C21.1 4 22 4.9 22 6V19.5C22 21.4 20.4 23 18.5 23H8" {...lineStroke} />
+      <path d="M8 4C6.3 4 5 5.3 5 7V21C5 22.1 5.9 23 7 23C8.1 23 9 22.1 9 21V7" {...lineStroke} />
+      <path d="M12 9H18M12 13H18" {...lineStroke} />
+    </svg>
+  );
+}
+
+/** Figma: Practitioner > Credential icon (leaf): a decade treating root causes. */
+export function LeafIcon({ className, ...props }: IconProps) {
+  return (
+    <svg {...lineIcon} className={cn("shrink-0", className)} {...props}>
+      <path d="M5 23C5 12 11 5 24 4C24 17 17 23 5 23Z" {...lineStroke} />
+      <path d="M5 23L16 12" {...lineStroke} />
+    </svg>
+  );
+}
