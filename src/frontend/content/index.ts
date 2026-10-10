@@ -10,7 +10,7 @@ import { serviceDetails, services } from "@/frontend/content/services";
  * the typed data files later without touching the pages. In development, set
  * SKELETON_DEMO_DELAY_MS (see .env.example) to slow them down and preview loading skeletons.
  */
-// Vercel deployment 6 October 2026
+// Vercel deployment 10 October 2026
 export async function simulateLatency() {
   const ms = Number(process.env.SKELETON_DEMO_DELAY_MS);
   if (process.env.NODE_ENV === "development" && ms > 0) {
