@@ -39,7 +39,7 @@ export function ServiceCard({
       data-service-card
       className={cn(
         // overflow-clip, not hidden: a scroll container here would freeze the photo's parallax.
-        "service-card relative flex flex-col overflow-clip rounded-sm bg-white/[0.01] backdrop-blur-[6px]",
+        "service-card relative flex flex-col overflow-clip rounded-card border border-card-border backdrop-blur-card",
         href &&
           "card-lift has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-4 has-[a:focus-visible]:outline-accent",
         className,
@@ -53,7 +53,7 @@ export function ServiceCard({
         quality={90}
         className={cn("card-media h-[204px] w-full shrink-0", imageClassName)}
       />
-      <div className="flex flex-1 items-center gap-3 bg-scrim p-5 text-cream">
+      <div className="flex flex-1 items-center gap-3 bg-card-fill p-5 text-cream">
         <div className="min-w-0 flex-1">
           <Heading className="text-h5">
             {href ? (

@@ -3,7 +3,10 @@ import { about } from "@/frontend/content/about";
 import { blogPosts } from "@/frontend/content/blogs";
 import { contactPage } from "@/frontend/content/contact";
 import { privacyPolicy, termsOfService } from "@/frontend/content/legal";
+import { profilePage } from "@/frontend/content/profile";
 import { serviceDetails, services } from "@/frontend/content/services";
+import { signInPage } from "@/frontend/content/signin";
+import { signUpPage } from "@/frontend/content/signup";
 
 /**
  * Async content getters. Pages read content through these so a CMS or database can replace
@@ -51,4 +54,19 @@ export async function getContactPage() {
 export async function getLegalDocument(kind: "privacy" | "terms") {
   await simulateLatency();
   return kind === "privacy" ? privacyPolicy : termsOfService;
+}
+
+export async function getSignInPage() {
+  await simulateLatency();
+  return signInPage;
+}
+
+export async function getSignUpPage() {
+  await simulateLatency();
+  return signUpPage;
+}
+
+export async function getProfilePage() {
+  await simulateLatency();
+  return profilePage;
 }

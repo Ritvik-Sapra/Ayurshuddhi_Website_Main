@@ -18,12 +18,12 @@ export const menuColumns: NavLink[][] = [
   [{ label: "Services", href: "/services" }],
 ];
 
-/** Boxed block under the last column. Both links go to the maintenance page until accounts ship. */
+/** Boxed block under the last column: the account pages. */
 export const menuPortal: { title: string; links: NavLink[] } = {
   title: "User Portal",
   links: [
-    { label: "Log in", href: MAINTENANCE },
-    { label: "Create account", href: MAINTENANCE },
+    { label: "Log in", href: "/login" },
+    { label: "Create account", href: "/signup" },
   ],
 };
 

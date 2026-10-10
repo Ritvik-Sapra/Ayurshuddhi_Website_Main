@@ -26,7 +26,9 @@
   --color-glass-strong: rgb(255 251 231 / 0.1);
   --color-scrim: rgb(26 23 20 / 0.75);
   --color-scrim-soft: rgb(26 26 20 / 0.35);
-  --color-panel: rgb(89 77 31 / 0.55);
+  /* Shared glass card (ui/GlassCard.tsx and the `glass-card` utility below). */
+  --color-card-fill: color-mix(in srgb, var(--color-green-dark) 82%, transparent);
+  --color-card-border: color-mix(in srgb, var(--color-cream) 16%, transparent);
   /* Footer (Footer.tsx). The base is the exact dark at the bottom edge of the footer photo. */
   --color-footer: #1f211c;
   --color-footer-heading: #8f968f;
@@ -35,6 +37,7 @@
   /* Radius */
   --radius-sm: 4px;
   --radius-md: 10px;
+  --radius-card: 8px;
   --radius-full: 100px;
 
   /* Font */
@@ -57,6 +60,8 @@
   --text-h2: 3rem;
   --text-h2--line-height: 1.17;
   --text-h2--letter-spacing: -0.02em;
+  --text-h3: 2.75rem;
+  --text-h3--line-height: 1.17;
   --text-h4: 2.25rem;
   --text-h4--line-height: 1.11;
   --text-h5: 1.875rem;
@@ -95,6 +100,8 @@
   --ease-wipe: cubic-bezier(0.65, 0, 0.35, 1);
   /* Small elements popping into place with a slight overshoot. */
   --ease-soft-pop: cubic-bezier(0.34, 1.4, 0.64, 1);
+  /* Backdrop blur behind glass cards. */
+  --blur-card: 12px;
   /* Soft dark glow under a lifted card. */
   --shadow-lift: 0 12px 40px -12px rgb(0 0 0 / 0.35);
   --duration-fast: 150ms;
@@ -256,4 +263,15 @@ body {
   padding-inline: var(--gutter);
   margin-inline: auto;
   max-width: 1440px;
+}
+
+/*
+ * The one glass card: contact and booking panels, account pages. (Service cards use the same
+ * tokens piecemeal: border, radius and blur on the card, `bg-card-fill` on the text bar.)
+ */
+@utility glass-card {
+  background-color: var(--color-card-fill);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius-card);
+  backdrop-filter: blur(var(--blur-card));
 }
