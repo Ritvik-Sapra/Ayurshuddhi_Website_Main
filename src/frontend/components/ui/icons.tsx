@@ -29,14 +29,14 @@ export function ImageIcon({ className, ...props }: IconProps) {
   );
 }
 
-/** Figma: Icon/Arrow Tile (32, accent) and Icon/Arrow Tile Green (40, green). */
+/** Figma: Icon/Arrow Tile (32, accent) and Icon/Arrow Tile Green (40, green). "cream" is a 32 tile with a green arrow. */
 export function ArrowTile({
   tone = "accent",
   className,
   ...props
-}: IconProps & { tone?: "accent" | "green" }) {
-  const size = tone === "accent" ? 32 : 40;
-  const offset = tone === "accent" ? 0 : 4;
+}: IconProps & { tone?: "accent" | "green" | "cream" }) {
+  const size = tone === "green" ? 40 : 32;
+  const offset = tone === "green" ? 4 : 0;
   return (
     <svg
       viewBox={`0 0 ${size} ${size}`}
@@ -51,11 +51,11 @@ export function ArrowTile({
         width={size}
         height={size}
         rx={4}
-        className={tone === "accent" ? "fill-accent" : "fill-green"}
+        className={{ accent: "fill-accent", green: "fill-green", cream: "fill-cream" }[tone]}
       />
       <path
         d={`M${9 + offset} ${23 + offset}L${23 + offset} ${9 + offset}M${23 + offset} ${19.5 + offset}V${9 + offset}H${12.5 + offset}`}
-        className="stroke-cream"
+        className={tone === "cream" ? "stroke-green" : "stroke-cream"}
         strokeWidth={1.6}
         strokeLinecap="round"
         strokeLinejoin="round"

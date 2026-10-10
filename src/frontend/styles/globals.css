@@ -37,6 +37,10 @@
   --font-sans: var(--font-open-sans), ui-sans-serif, system-ui, sans-serif;
 
   /* Type scale (Figma text styles) */
+  /* Home hero headline (Cormorant): 48px on mobile up to 88px on large desktop. */
+  --text-display: clamp(3rem, 2rem + 4.2vw, 5.5rem);
+  --text-display--line-height: 1;
+  --text-display--letter-spacing: -0.01em;
   --text-hero: clamp(3rem, 2.443rem + 2.2857vw, 4.5rem);
   --text-hero--line-height: 1.17;
   --text-hero--letter-spacing: -0.04em;
@@ -173,6 +177,25 @@ body {
 }
 .skip-link:focus-visible {
   transform: translateY(0);
+}
+
+/* Home hero (page.tsx): the headline block sits bottom-left on a soft slate scrim. */
+.hero-scrim {
+  background: radial-gradient(
+    ellipse 75% 70% at 0% 100%,
+    color-mix(in srgb, var(--color-ink) 70%, transparent),
+    transparent 70%
+  );
+}
+.hero-headline {
+  max-width: 9em;
+  font-family: var(--font-cormorant), serif;
+  font-weight: 500;
+  text-wrap: balance;
+  text-shadow: 0 1px 24px color-mix(in srgb, var(--color-ink) 35%, transparent);
+}
+.hero-sub {
+  font-family: var(--font-inter), sans-serif;
 }
 
 @utility container-page {
