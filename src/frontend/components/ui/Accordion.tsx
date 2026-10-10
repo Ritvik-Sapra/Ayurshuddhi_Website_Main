@@ -3,6 +3,7 @@
 import { useId, useState } from "react";
 import { cn } from "@/frontend/lib/cn";
 import { ChevronTile } from "@/frontend/components/ui/icons";
+import { StaggerGroup, StaggerItem } from "@/frontend/components/ui/Stagger";
 import type { FaqEntry } from "@/frontend/content/services";
 
 type AccordionProps = {
@@ -19,14 +20,15 @@ export function Accordion({ items, className }: AccordionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <ul className={cn("flex flex-col gap-6 lg:gap-8", className)}>
+    <StaggerGroup as="ul" className={cn("flex flex-col gap-6 lg:gap-8", className)}>
       {items.map((item, index) => {
         const open = openIndex === index;
         const buttonId = `${baseId}-btn-${index}`;
         const panelId = `${baseId}-panel-${index}`;
         const number = String(index + 1).padStart(2, "0");
         return (
-          <li
+          <StaggerItem
+            as="li"
             key={item.question}
             className={cn(
               "faq-item flex flex-col rounded-sm",
@@ -67,9 +69,9 @@ export function Accordion({ items, className }: AccordionProps) {
                 </p>
               </div>
             </div>
-          </li>
+          </StaggerItem>
         );
       })}
-    </ul>
+    </StaggerGroup>
   );
 }

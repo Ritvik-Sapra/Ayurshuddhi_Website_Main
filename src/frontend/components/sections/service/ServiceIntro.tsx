@@ -1,4 +1,5 @@
 import { BackgroundVideo } from "@/frontend/components/ui/BackgroundVideo";
+import { Reveal } from "@/frontend/components/ui/Reveal";
 import { MediaPlaceholder } from "@/frontend/components/ui/MediaPlaceholder";
 
 type ServiceIntroProps = {
@@ -13,13 +14,13 @@ export function ServiceIntro({ title, intro, videoSrc, videoLabel }: ServiceIntr
   return (
     <section className="flex flex-col items-center gap-8 bg-cream px-5 pb-16 pt-32 text-center text-green lg:gap-16 lg:pb-20 lg:pt-40">
       <h1 className="text-h1">{title}</h1>
-      <div className="flex flex-col items-center gap-8 lg:flex-row lg:items-start">
+      <Reveal className="flex flex-col items-center gap-8 lg:flex-row lg:items-start">
         {intro.map((paragraph) => (
           <p key={paragraph} className="max-w-[300px] text-body lg:w-[345px] lg:max-w-none">
             {paragraph}
           </p>
         ))}
-      </div>
+      </Reveal>
       <MediaPlaceholder
         label={videoLabel}
         decorative
