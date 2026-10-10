@@ -109,6 +109,77 @@
 }
 
 /*
+ * ---------- Footer links (Footer.tsx) ----------
+ * The link box is a 44px tap target, so the underline sits on the inner text span, not the box.
+ * Reduced motion: the underline fades in instead of drawing across.
+ */
+.footer-link {
+  transition: color var(--duration-base) var(--ease-out-expo);
+}
+.footer-link__text {
+  position: relative;
+}
+.footer-link__text::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--duration-slow) var(--ease-out-expo);
+}
+.footer-link:is(:hover, :focus-visible) .footer-link__text::after {
+  transform: scaleX(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .footer-link {
+    transition: none;
+  }
+  .footer-link__text::after {
+    transform: none;
+    opacity: 0;
+    transition: opacity var(--duration-reduced) ease-out;
+  }
+  .footer-link:is(:hover, :focus-visible) .footer-link__text::after {
+    opacity: 1;
+  }
+}
+
+/*
+ * ---------- Nav chips yield to the footer ----------
+ * The fixed chips may only sit over the footer photo. When the content below the photo
+ * (.footer-body) scrolls up to the chip area, the chips ride up with the photo, 1:1 with the
+ * scroll, so they never cover footer links or text on short screens (landscape phones, small
+ * laptops). The timeline is named on the body so the header can see it; on pages without the
+ * footer it doesn't exist and the chips are untouched. Uses `translate`, not `transform`, so it
+ * never fights the menu or home intro scripts. Browsers without scroll-driven animations get the
+ * same movement from ChipsYieldFallback.tsx, which sets `data-chips-fallback` on <html>.
+ */
+@keyframes chips-yield {
+  to {
+    translate: 0 calc(var(--nav-height) * -1);
+  }
+}
+@supports (animation-timeline: view()) and (timeline-scope: --footer-body) {
+  body {
+    timeline-scope: --footer-body;
+  }
+  .footer-body {
+    view-timeline: --footer-body block;
+    /* Measure from the bottom of the chip area, not the top of the screen. */
+    view-timeline-inset: var(--nav-height) 0px;
+  }
+  html:not([data-chips-fallback]) body > header > :is(a.nav-chip, .menu-trigger) {
+    animation: chips-yield linear both;
+    animation-timeline: --footer-body;
+    animation-range: exit-crossing 0px exit-crossing var(--nav-height);
+  }
+}
+
+/*
  * ---------- Card hover lift ----------
  * Hover only where a real pointer can hover, so a tap on a touch screen never leaves a card
  * stuck lifted. `[data-hover]` gives a frozen copy of the page (lib/pageSnapshot.ts) the same

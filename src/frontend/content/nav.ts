@@ -2,7 +2,7 @@ export type NavLink = { label: string; href: string };
 
 /** Full-screen menu overlay links (Figma: Nav/Menu Overlay). */
 /** Pages that are not live yet point here. Switch a link back to its real route when it ships. */
-const MAINTENANCE = "/maintenance";
+export const MAINTENANCE = "/maintenance";
 
 /** The menu is laid out as three columns on desktop (stacked on mobile). */
 export const menuColumns: NavLink[][] = [
@@ -34,18 +34,4 @@ export const menuContactLink: NavLink = { label: "Contact us", href: "/contact" 
 export const menuMetaLinks: NavLink[] = [
   { label: "Contact", href: "/contact" },
   { label: "Appointments", href: "/ayurveda#book" },
-];
-
-export const footerDestinations: NavLink[] = [
-  { label: "Ayurveda", href: "/ayurveda" },
-  { label: "Panchakarma", href: "/panchakarma" },
-  { label: "Naturopathy", href: "/services" },
-  { label: "Yoga & Meditation", href: "/services" },
-];
-
-export const footerPages: NavLink[] = [
-  { label: "Blogs", href: MAINTENANCE },
-  { label: "About Us", href: "/about" },
-  { label: "Privacy Policy", href: "/privacy-policy" },
-  { label: "Terms of Service", href: "/terms" },
 ];

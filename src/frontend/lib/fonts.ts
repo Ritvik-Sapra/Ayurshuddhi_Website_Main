@@ -17,7 +17,10 @@ export const playfair = Playfair_Display({
   variable: "--font-playfair",
 });
 
-/** Cormorant Garamond (headline) and Inter (supporting line) are used only in the home hero. */
+/**
+ * Cormorant Garamond and Inter are used only in the home hero (headline, supporting line) and
+ * the footer (wordmark, everything else).
+ */
 export const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
   weight: ["400", "500"],

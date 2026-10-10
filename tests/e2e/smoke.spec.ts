@@ -44,6 +44,126 @@ test.describe("navigation", () => {
   });
 });
 
+test.describe("footer", () => {
+  test("link groups, contact links and legal links", async ({ page }) => {
+    await page.goto("/about");
+    await expect(page.locator(".site-footer .footer-body")).toBeVisible();
+    const footer = page.getByRole("contentinfo");
+    const nav = footer.getByRole("navigation", { name: "Footer" });
+    for (const heading of ["Therapies", "Explore", "Visit"]) {
+      await expect(nav.getByRole("heading", { name: heading })).toBeVisible();
+    }
+    await expect(nav.getByRole("link", { name: "Book a consultation" })).toHaveAttribute(
+      "href",
+      "/ayurveda#book",
+    );
+    await expect(nav.getByRole("link", { name: /^\+91/ })).toHaveAttribute("href", /^tel:/);
+    await expect(nav.getByRole("link", { name: /@/ })).toHaveAttribute("href", /^mailto:/);
+    const legal = footer.getByRole("navigation", { name: "Legal" });
+    await expect(legal.getByRole("link", { name: "Privacy Policy" })).toHaveAttribute(
+      "href",
+      "/privacy-policy",
+    );
+    await expect(legal.getByRole("link", { name: "Terms of Service" })).toHaveAttribute(
+      "href",
+      "/terms",
+    );
+    await expect(footer).toContainText(`© ${new Date().getFullYear()} Ayurshuddhi Wellness`);
+  });
+
+  // The fixed nav chips may only sit over the footer photo, never over the content below it.
+  // "fallback" stands in for browsers without scroll-driven animations (Firefox, older Safari).
+  for (const mode of ["css", "fallback"] as const) {
+    for (const viewport of [
+      { width: 1366, height: 768 },
+      { width: 844, height: 390 },
+      { width: 390, height: 844 },
+    ]) {
+      test(`nav chips never cover footer content at ${viewport.width}x${viewport.height} (${mode})`, async ({
+        page,
+      }) => {
+        if (mode === "fallback") {
+          await page.addInitScript(() => {
+            const supports = CSS.supports.bind(CSS) as (...args: string[]) => boolean;
+            CSS.supports = ((...args: string[]) =>
+              args.join(":").includes("animation-timeline")
+                ? false
+                : supports(...args)) as typeof CSS.supports;
+          });
+        }
+        await page.setViewportSize(viewport);
+        await page.goto("/about");
+        await expect(page.locator(".site-footer .footer-body")).toBeVisible();
+        if (mode === "fallback") {
+          await expect(page.locator("html")).toHaveAttribute("data-chips-fallback", "");
+        }
+        // Partway (content top 50px from the top of the screen), then the very bottom of the page.
+        for (const contentTop of [50, null]) {
+          await page.evaluate((top) => {
+            const content = document.querySelector("footer .footer-body")!.getBoundingClientRect();
+            const target =
+              top === null ? document.documentElement.scrollHeight : scrollY + content.top - top;
+            window.scrollTo({ top: target, behavior: "instant" });
+          }, contentTop);
+          await page.waitForFunction(() => {
+            const content = document.querySelector("footer .footer-body")!.getBoundingClientRect();
+            const chips = document.querySelectorAll(
+              "body > header > :is(a.nav-chip, .menu-trigger)",
+            );
+            return [...chips].every((chip) => {
+              const bottom = chip.getBoundingClientRect().bottom;
+              return bottom <= 0 || bottom <= content.top;
+            });
+          });
+        }
+      });
+    }
+  }
+
+  test("the photo never takes over an ultra-wide screen", async ({ page }) => {
+    for (const viewport of [
+      { width: 3440, height: 1440 },
+      { width: 2560, height: 1080 },
+    ]) {
+      await page.setViewportSize(viewport);
+      await page.goto("/about");
+      await expect(page.locator(".site-footer .footer-body")).toBeVisible();
+      const height = await page
+        .locator(".site-footer > div")
+        .first()
+        .evaluate((band) => band.getBoundingClientRect().height);
+      expect(height).toBeLessThanOrEqual(Math.min(640, viewport.height * 0.65));
+    }
+  });
+
+  test("every footer link is at least 44x44 and no two overlap", async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 667 });
+    await page.goto("/about");
+    await expect(page.locator(".site-footer .footer-body")).toBeVisible();
+    const boxes = await page.locator(".site-footer a").evaluateAll((links) =>
+      links.map((link) => {
+        const r = link.getBoundingClientRect();
+        return {
+          text: link.textContent,
+          left: r.left,
+          top: r.top,
+          right: r.right,
+          bottom: r.bottom,
+        };
+      }),
+    );
+    for (const [i, a] of boxes.entries()) {
+      expect(a.right - a.left, `${a.text} width`).toBeGreaterThanOrEqual(44);
+      expect(a.bottom - a.top, `${a.text} height`).toBeGreaterThanOrEqual(44);
+      for (const b of boxes.slice(i + 1)) {
+        const overlap =
+          a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom;
+        expect(overlap, `${a.text} overlaps ${b.text}`).toBe(false);
+      }
+    }
+  });
+});
+
 test.describe("404", () => {
   test("clicking anywhere goes home", async ({ page }) => {
     await page.goto("/no-such-page");
