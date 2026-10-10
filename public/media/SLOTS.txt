@@ -12,7 +12,6 @@ about/testimonials/   testimonials background photo                       (conte
 blogs/                one cover photo per blog card (5)                   (content/blogs.ts)
 blogs/dinacharya-daily-routine/   images inside the article              (content/blogs.ts)
 contact/              contact page background photo                       (content/contact.ts)
-footer/               footer photo                                        (components/layout/Footer.tsx)
 
 Tips: JPG/WebP for photos (hero poster under ~300 KB), MP4 under 2 MB for mobile video, lowercase names with dashes.
 Record each file's source and licence in public/ASSETS.md.

@@ -21,5 +21,4 @@ export const site = {
     { label: "Mon–Sat", value: "9:00 AM – 7:00 PM" },
     { label: "Sun", value: "10:00 AM – 2:00 PM" },
   ],
-  copyright: "© 2026 AyurshuddhiWellness. All rights reserved.",
 } as const;

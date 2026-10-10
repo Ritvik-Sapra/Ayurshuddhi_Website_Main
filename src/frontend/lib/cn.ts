@@ -21,6 +21,8 @@ const twMerge = extendTailwindMerge({
             "body",
             "small",
             "eyebrow",
+            "footer-link",
+            "wordmark",
           ],
         },
       ],

@@ -27,6 +27,10 @@
   --color-scrim: rgb(26 23 20 / 0.75);
   --color-scrim-soft: rgb(26 26 20 / 0.35);
   --color-panel: rgb(89 77 31 / 0.55);
+  /* Footer (Footer.tsx). The base is the exact dark at the bottom edge of the footer photo. */
+  --color-footer: #1f211c;
+  --color-footer-heading: #8f968f;
+  --color-footer-meta: #a9aea8;
 
   /* Radius */
   --radius-sm: 4px;
@@ -72,6 +76,18 @@
   --text-eyebrow: 0.75rem;
   --text-eyebrow--line-height: 1.33;
   --text-eyebrow--letter-spacing: 0.04em;
+  /* Footer links (Inter). */
+  --text-footer-link: 1.0625rem;
+  --text-footer-link--line-height: 1.5;
+  /* Footer stacked wordmark (Cormorant): 38px on mobile up to 56px on large desktop. */
+  --text-wordmark: clamp(2.375rem, 1.957rem + 1.7143vw, 3.5rem);
+  --text-wordmark--line-height: 1;
+
+  /* Letter spacing */
+  /* Footer group headings. */
+  --tracking-label: 0.16em;
+  /* "WELLNESS" under the footer wordmark. */
+  --tracking-wordmark: 0.42em;
 
   /* Motion (JS mirrors: frontend/lib/motion.ts) */
   --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
@@ -196,6 +212,43 @@ body {
 }
 .hero-sub {
   font-family: var(--font-inter), sans-serif;
+}
+
+/* Footer (Footer.tsx): Inter throughout, Cormorant for the stacked wordmark. */
+.site-footer {
+  font-family: var(--font-inter), sans-serif;
+}
+/*
+ * Footer photo band: 3:1 and at least 320px, but never taller than 640px or 65% of the screen,
+ * so the links always show with it (a 3440px ultra-wide screen would otherwise get a 1147px photo).
+ */
+.footer-band {
+  max-height: min(40rem, 65svh);
+}
+/*
+ * Cropping the 2:1 photo. Below 92% of its height it is solid --color-footer, so up to 8% can
+ * come off the bottom with no visible edge; the rest comes off the sky.
+ * Narrow bands barely overflow, so 70% keeps the bottom crop tiny (under 640px wide the band is
+ * 320px tall and the photo crops around its horizontal centre instead).
+ * From 43.5rem the photo always overflows by more than 8%: `100%` puts its bottom edge on the
+ * band's and 4cqw (8% of its height) pushes it below, at any band height, including the capped
+ * ultra-wide band.
+ */
+.footer-photo {
+  object-position: 50% 70%;
+}
+@container (min-width: 43.5rem) {
+  .footer-photo {
+    object-position: 50% calc(100% + 4cqw);
+  }
+}
+.footer-wordmark {
+  font-family: var(--font-cormorant), serif;
+  font-weight: 500;
+}
+/* Letter spacing also trails the last letter; pull it back so the word centres under the mark. */
+.footer-wordmark-sub {
+  margin-right: calc(var(--tracking-wordmark) * -1);
 }
 
 @utility container-page {
