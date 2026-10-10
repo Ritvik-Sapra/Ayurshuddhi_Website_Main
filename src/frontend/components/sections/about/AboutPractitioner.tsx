@@ -50,7 +50,7 @@ export function AboutPractitioner({ practitioner }: { practitioner: About["pract
   return (
     <section
       aria-labelledby="practitioner-heading"
-      className="relative flex flex-col gap-12 overflow-hidden bg-cream py-16 text-green lg:gap-16 lg:py-30"
+      className="section-reveal relative flex flex-col gap-12 overflow-hidden bg-cream py-16 text-green lg:gap-16 lg:py-30"
     >
       <HangingLeaf />
       <div className="flex flex-col items-center gap-10 px-5 lg:flex-row lg:gap-20 lg:px-10">
