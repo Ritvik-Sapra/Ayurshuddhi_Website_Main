@@ -141,3 +141,31 @@ export function CloseIcon({ className, ...props }: IconProps) {
     </svg>
   );
 }
+
+/** Figma: Check (20, peach ring with a tick), used for the benefit lists. */
+export function CheckCircleIcon({ className, ...props }: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 20 20"
+      width={20}
+      height={20}
+      fill="none"
+      aria-hidden="true"
+      className={cn("shrink-0", className)}
+      {...props}
+    >
+      <path
+        d="M10 19.25C15.1086 19.25 19.25 15.1086 19.25 10C19.25 4.89137 15.1086 0.75 10 0.75C4.89137 0.75 0.75 4.89137 0.75 10C0.75 15.1086 4.89137 19.25 10 19.25Z"
+        className="stroke-accent-soft"
+        strokeWidth={1.2}
+      />
+      <path
+        d="M6 10.2L8.6 12.8L14 7.5"
+        className="stroke-accent-soft"
+        strokeWidth={1.4}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}

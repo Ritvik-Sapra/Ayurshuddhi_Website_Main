@@ -3,6 +3,8 @@ import { getContactPage } from "@/frontend/content";
 import { site } from "@/frontend/content/site";
 import { ContactForm } from "@/frontend/components/forms/ContactForm";
 import { Reveal } from "@/frontend/components/ui/Reveal";
+import { glassCardClass } from "@/frontend/components/ui/GlassCard";
+import { cn } from "@/frontend/lib/cn";
 import { MediaPlaceholder } from "@/frontend/components/ui/MediaPlaceholder";
 
 export const metadata: Metadata = {
@@ -12,7 +14,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/contact" },
 };
 
-/** Contact page (no Figma screen): intro, clinic details and a message form in the booking-panel style. */
+/** Contact page (no Figma screen): intro, clinic details and a message form in glass cards. */
 export default async function ContactPage() {
   const contactPage = await getContactPage();
   return (
@@ -28,7 +30,12 @@ export default async function ContactPage() {
       <section className="relative px-5 pb-16 pt-12 lg:px-8 lg:pb-[120px] lg:pt-[120px]">
         <MediaPlaceholder label={contactPage.photoLabel} decorative className="absolute inset-0" />
         <div className="relative mx-auto flex max-w-[1376px] flex-col gap-6 lg:flex-row lg:items-start lg:gap-8">
-          <Reveal className="flex flex-col gap-8 rounded-sm bg-panel px-4 py-6 text-cream backdrop-blur-[6px] lg:w-[520px] lg:shrink-0 lg:px-8 lg:py-10">
+          <Reveal
+            className={cn(
+              glassCardClass,
+              "flex flex-col gap-8 text-cream lg:w-[520px] lg:shrink-0",
+            )}
+          >
             <h2 className="text-h5 lg:text-h2">Visit or call us</h2>
             <address className="flex flex-col gap-6 not-italic">
               <div className="flex flex-col gap-1">
@@ -64,7 +71,7 @@ export default async function ContactPage() {
             </div>
           </Reveal>
 
-          <Reveal className="flex flex-1 flex-col gap-4 rounded-sm bg-panel px-4 py-6 backdrop-blur-[6px] lg:gap-6 lg:px-8 lg:py-10">
+          <Reveal className={cn(glassCardClass, "flex flex-1 flex-col gap-4 lg:gap-6")}>
             <h2 className="text-h5 text-cream lg:text-h2">Send us a message</h2>
             <ContactForm />
           </Reveal>
