@@ -19,12 +19,9 @@ export const metadata: Metadata = {
  * benefits card sits to its left. UI only: no real account is created yet.
  */
 export default async function SignUpPage() {
-  const { photoLabel, benefits, form } = await getSignUpPage();
+  const { benefits, form } = await getSignUpPage();
   return (
-    <AccountShell
-      imageLabel={photoLabel}
-      className="gap-6 px-6 lg:flex-row lg:items-start lg:gap-6 lg:px-6 xl:gap-12"
-    >
+    <AccountShell className="gap-6 px-6 lg:flex-row lg:items-start lg:gap-6 lg:px-6 xl:gap-12">
       <GlassCard
         as="section"
         aria-labelledby="signup-title"
@@ -38,10 +35,7 @@ export default async function SignUpPage() {
         <AuthSwitch prompt={form.switch.prompt} href={form.switch.href} label={form.switch.label} />
       </GlassCard>
 
-      <SignUpBenefits
-        content={benefits}
-        className="lg:order-first lg:w-80 lg:shrink-0 xl:w-130"
-      />
+      <SignUpBenefits content={benefits} className="lg:order-first lg:w-80 lg:shrink-0 xl:w-130" />
     </AccountShell>
   );
 }

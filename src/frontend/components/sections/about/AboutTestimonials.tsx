@@ -1,39 +1,35 @@
 import type { About } from "@/frontend/content/about";
-import { StaggerGroup, StaggerItem } from "@/frontend/components/ui/Stagger";
-import { TestimonialCard } from "@/frontend/components/cards/TestimonialCard";
-import { MediaPlaceholder } from "@/frontend/components/ui/MediaPlaceholder";
+import { Reveal } from "@/frontend/components/ui/Reveal";
+import { GinkgoLeaf } from "@/frontend/components/ui/MenuBotanicals";
+import { TestimonialCarousel } from "@/frontend/components/sections/about/TestimonialCarousel";
+import { playfair } from "@/frontend/lib/fonts";
 
-/** Figma: Testimonials. Cards over a full-bleed photo: stacked on mobile, staggered diagonally on desktop. */
-export function AboutTestimonials({ testimonials }: { testimonials: About["testimonials"] }) {
+/** Figma: Testimonials. A dark green band with a heading and a carousel of client quote cards. */
+export function AboutTestimonials({
+  testimonials,
+  intro,
+}: {
+  testimonials: About["testimonials"];
+  intro: About["testimonialsIntro"];
+}) {
   return (
     <section
       aria-labelledby="testimonials-heading"
-      className="relative overflow-hidden bg-placeholder lg:mx-3.5 lg:mt-[120px] lg:h-[882px] lg:rounded-sm"
+      className={`${playfair.variable} relative bg-green-dark px-5 py-16 text-cream lg:px-8 lg:py-28`}
     >
-      <MediaPlaceholder
-        label="Blurred garden background behind the client testimonials"
-        decorative
-        className="absolute inset-0"
-      />
-      <h2 id="testimonials-heading" className="sr-only">
-        What our clients say
-      </h2>
-      <StaggerGroup className="relative mx-auto flex w-[340px] max-w-full flex-col gap-16 pt-16 lg:grid lg:w-full lg:grid-cols-3 lg:gap-0 lg:px-[39px] lg:pt-[120px]">
-        {testimonials.map((testimonial, index) => (
-          <StaggerItem
-            key={index}
-            className={
-              [
-                "lg:justify-self-start",
-                "lg:mt-[180px] lg:justify-self-center",
-                "lg:mt-[360px] lg:justify-self-end",
-              ][index]
-            }
-          >
-            <TestimonialCard testimonial={testimonial} className="lg:w-[345px]" />
-          </StaggerItem>
-        ))}
-      </StaggerGroup>
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+        <GinkgoLeaf className="absolute -right-8 -top-6 w-64 rotate-[160deg] opacity-10 lg:w-96" />
+        <GinkgoLeaf className="absolute -bottom-10 -left-8 w-56 -rotate-12 opacity-10 lg:w-80" />
+      </div>
+      <div className="relative mx-auto flex max-w-6xl flex-col gap-12 lg:gap-14">
+        <Reveal className="flex flex-col items-center gap-3 text-center">
+          <p className="text-body-l text-accent-soft">{intro.eyebrow}</p>
+          <h2 id="testimonials-heading" className="font-serif text-h3 lg:text-h2">
+            {intro.title}
+          </h2>
+        </Reveal>
+        <TestimonialCarousel testimonials={testimonials} />
+      </div>
     </section>
   );
 }

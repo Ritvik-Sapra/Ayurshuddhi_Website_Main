@@ -2,7 +2,6 @@ export const signInPage = {
   eyebrow: "User Portal",
   title: "Welcome back",
   intro: "Log in to see your upcoming consultations and manage your bookings.",
-  photoLabel: "A calm, softly lit corner of the clinic with plants and natural light",
   form: {
     emailLabel: "Email",
     emailPlaceholder: "you@example.com",

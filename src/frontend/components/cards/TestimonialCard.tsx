@@ -1,7 +1,13 @@
 import { cn } from "@/frontend/lib/cn";
 import type { Testimonial } from "@/frontend/content/about";
 
-/** Figma: Card/Testimonial. A green card with a star rating, the client's name and their quote. */
+/** First letters of the first and last name: "Priya Sharma" becomes "PS". */
+function initials(name: string) {
+  const parts = name.split(" ");
+  return `${parts[0][0]}${parts.length > 1 ? parts[parts.length - 1][0] : ""}`;
+}
+
+/** Figma: Card/Testimonial. A dark card with a star rating, the quote, and the client's name and treatment. */
 export function TestimonialCard({
   testimonial,
   className,
@@ -12,17 +18,29 @@ export function TestimonialCard({
   return (
     <figure
       className={cn(
-        // Hover lift + glow: Tailwind's `hover:` only matches real pointers, so touch screens never stick.
-        "flex flex-col items-center gap-4 rounded-sm bg-green p-6 text-center text-cream transition-[translate,box-shadow] duration-300 ease-out-expo hover:-translate-y-1.5 hover:shadow-lift motion-reduce:transition-none motion-reduce:hover:translate-y-0",
+        "flex h-full flex-col gap-6 rounded-card border border-cream/80 bg-green/30 p-6 text-cream",
         className,
       )}
     >
-      <p className="whitespace-pre text-body-l text-accent-soft">
+      <p className="text-body-l tracking-widest text-accent-soft">
         <span className="sr-only">{testimonial.rating} out of 5 stars</span>
-        <span aria-hidden="true">{`${"★".repeat(testimonial.rating)}  (${testimonial.rating})`}</span>
+        <span aria-hidden="true">{"★".repeat(testimonial.rating)}</span>
       </p>
-      <figcaption className="text-h6">{testimonial.name}</figcaption>
-      <blockquote className="text-body">{testimonial.quote}</blockquote>
+      <blockquote className="flex-1 text-body">{testimonial.quote}</blockquote>
+      <figcaption className="flex items-center gap-4 border-t border-cream/30 pt-6">
+        <span
+          aria-hidden="true"
+          className="flex size-14 shrink-0 items-center justify-center rounded-full bg-accent-soft font-serif text-h6 text-green-dark"
+        >
+          {initials(testimonial.name)}
+        </span>
+        <span className="flex flex-col items-start gap-1">
+          <span className="text-card font-semibold">{testimonial.name}</span>
+          <span className="rounded-full bg-accent-soft px-3 py-0.5 text-eyebrow text-green-dark">
+            {testimonial.tag}
+          </span>
+        </span>
+      </figcaption>
     </figure>
   );
 }

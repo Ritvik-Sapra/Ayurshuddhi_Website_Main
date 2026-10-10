@@ -17,10 +17,12 @@ export type ServiceDetail = {
   metaDescription: string;
   /** Two intro paragraphs shown side by side on desktop. */
   intro: [string, string];
-  /** TODO(media): licensed intro strip video, e.g. "/media/ayurveda-intro.mp4". */
-  videoSrc?: string;
   faq: FaqEntry[];
 };
+
+/** Photo strip under the title and intro on every service page. */
+export const serviceStripSrc =
+  "https://pub-fe7d6537004a4bd49472a6861a9a1224.r2.dev/images/service-page-images/service-strip.webp";
 
 /** Photo behind the booking form on every service page. */
 export const bookingImageSrc =

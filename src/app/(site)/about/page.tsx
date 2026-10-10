@@ -20,8 +20,7 @@ export default async function AboutPage() {
       <AboutGallery desktop={about.gallery.desktop} mobile={about.gallery.mobile} />
       <AboutStory story={about.story} />
       <AboutPractitioner practitioner={about.practitioner} />
-      <AboutTestimonials testimonials={about.testimonials} />
-      <div className="lg:h-[120px]" aria-hidden="true" />
+      <AboutTestimonials testimonials={about.testimonials} intro={about.testimonialsIntro} />
     </>
   );
 }
