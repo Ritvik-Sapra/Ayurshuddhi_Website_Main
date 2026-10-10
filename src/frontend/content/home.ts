@@ -2,12 +2,13 @@
  * Home hero copy (Figma: Home).
  *
  * TODO(copy): hero headline variants to A/B test later:
- *   A. "Rooted in Ancient Wisdom. Refined for Modern Living."  (current, from Figma)
+ *   A. "Rooted in ancient wisdom. Refined for modern living."  (current)
  *   B. "Ayurveda that fits your body, not a template."
  *   C. "Root-cause healing, guided by classical Ayurveda."
  */
 export const home = {
-  headline: "Rooted in Ancient Wisdom. Refined for Modern Living.",
+  headline: "Rooted in ancient wisdom. Refined for modern living.",
+  subhead: "Ayurvedic consultations and therapies, booked online.",
   cta: {
     label: "Book Now",
     href: "/ayurveda#book",
@@ -18,14 +19,15 @@ export const home = {
      * videoSrc: "/media/hero.mp4" (desktop), videoSrcMobile: "/media/hero-mobile.mp4" (under 2 MB),
      * posterSrc: "/media/hero-poster.jpg" (also the LCP image, keep it under ~300 KB).
      * With nothing set, the dark placeholder background is shown.
+     * Clips play in the order listed (not shuffled): AdobeStock_2185762968 is always second.
      */
     videoSources: [
-      "https://pub-fe7d6537004a4bd49472a6861a9a1224.r2.dev/videos/landing-page-videos/videos_AdobeStock_2185762968.mp4",
       "https://pub-fe7d6537004a4bd49472a6861a9a1224.r2.dev/videos/landing-page-videos/videos_video2.mp4",
+      "https://pub-fe7d6537004a4bd49472a6861a9a1224.r2.dev/videos/landing-page-videos/videos_AdobeStock_2185762968.mp4",
     ] as readonly string[],
     videoSourcesMobile: [
-      "https://pub-fe7d6537004a4bd49472a6861a9a1224.r2.dev/videos/landing-page-videos/videos_AdobeStock_2185762968.mp4",
       "https://pub-fe7d6537004a4bd49472a6861a9a1224.r2.dev/videos/landing-page-videos/videos_video2.mp4",
+      "https://pub-fe7d6537004a4bd49472a6861a9a1224.r2.dev/videos/landing-page-videos/videos_AdobeStock_2185762968.mp4",
     ] as readonly string[],
     posterSrc: undefined as string | undefined,
     posterAlt: "Sunlight streaming through a green forest",

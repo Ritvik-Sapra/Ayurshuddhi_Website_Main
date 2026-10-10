@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { cn } from "@/frontend/lib/cn";
 
 type BackgroundVideoProps = {
-  /** Video files played back to back in a random order per visitor. Nothing is rendered when empty. */
+  /** Video files played back to back, in the order given. Nothing is rendered when empty. */
   sources?: readonly string[];
   /** Lighter files for narrow screens. */
   sourcesMobile?: readonly string[];
@@ -37,19 +37,10 @@ function getSnapshot() {
   return !reduced && !saveData ? (wide ? "wide" : "narrow") : "off";
 }
 
-function shuffledIndexes(length: number) {
-  const indexes = Array.from({ length }, (_, index) => index);
-  for (let i = indexes.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [indexes[i], indexes[j]] = [indexes[j], indexes[i]];
-  }
-  return indexes;
-}
-
 /**
  * Muted, inline background video. It only mounts when the visitor has not asked for reduced
  * motion or data saving, and fades in over the poster once it is playing.
- * Each visitor gets a random order. Two stacked players alternate: the idle one buffers the next
+ * Clips play in the order given, looping. Two stacked players alternate: the idle one buffers the next
  * clip while the current one plays, then starts and crossfades in shortly before the current clip
  * ends, so the loop has no load delay or black frame.
  */
@@ -61,7 +52,6 @@ export function BackgroundVideo({
 }: BackgroundVideoProps) {
   const mode = useSyncExternalStore(subscribe, getSnapshot, () => "off");
   const [playing, setPlaying] = useState(false);
-  const [order] = useState(() => shuffledIndexes(sources?.length ?? 0));
   const [position, setPosition] = useState(0);
   // Track number loaded in each of the two players; the active one is `position % 2`.
   const [slotTracks, setSlotTracks] = useState<[number, number]>([0, 1]);
@@ -75,7 +65,7 @@ export function BackgroundVideo({
   if (!list.length || mode === "off") return null;
 
   const single = list.length < 2;
-  const fileFor = (track: number) => list[order[track % order.length] % list.length];
+  const fileFor = (track: number) => list[track % list.length];
   const activeSlot = position % 2;
 
   function advance() {

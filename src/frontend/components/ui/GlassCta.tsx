@@ -5,22 +5,22 @@ import { ArrowTile } from "@/frontend/components/ui/icons";
 
 type GlassCtaProps = ComponentProps<typeof Link> & { href: string };
 
-/** Frosted-glass pill call to action for use over photo or video backgrounds. */
+/** Mostly opaque, softly frosted call to action for use over photo or video backgrounds. */
 export function GlassCta({ className, children, ...rest }: GlassCtaProps) {
   return (
     <Link
       className={cn(
-        "card-lift group/cta relative inline-flex min-h-14 items-center justify-between gap-6 rounded-full",
-        "border border-cream/30 bg-green-dark/50 py-2 pl-7 pr-2 text-h6 text-cream",
-        "shadow-lg backdrop-blur-xl backdrop-saturate-150",
-        "transition-colors duration-150 ease-out hover:bg-green-dark/65 hover:border-cream/50",
+        "card-lift group/cta relative inline-flex min-h-16 items-center justify-between gap-8 rounded-2xl",
+        "border border-cream/30 bg-green-dark/75 py-4 pl-8 pr-4 text-h6 text-cream",
+        "shadow-lg backdrop-blur-md",
+        "transition-colors duration-150 ease-out hover:bg-green-dark hover:border-cream/50",
         "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent",
         className,
       )}
       {...rest}
     >
       <span>{children}</span>
-      <ArrowTile className="card-arrow size-10 rounded-full" />
+      <ArrowTile tone="cream" className="card-arrow size-10 rounded-xl" />
     </Link>
   );
 }
