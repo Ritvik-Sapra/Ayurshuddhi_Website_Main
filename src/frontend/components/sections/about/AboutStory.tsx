@@ -17,7 +17,7 @@ export function AboutStory({ story }: { story: About["story"] }) {
   return (
     <section
       aria-labelledby="story-heading"
-      className="relative isolate flex flex-col justify-end overflow-hidden bg-green-dark px-(--nav-inset) pb-(--nav-inset) pt-80 text-cream mt-2 md:justify-center md:pb-32 md:pt-32 lg:min-h-[70vh]"
+      className="section-reveal relative isolate flex flex-col justify-end overflow-hidden bg-green-dark px-(--nav-inset) pb-(--nav-inset) pt-80 text-cream mt-2 md:justify-center md:pb-32 md:pt-32 lg:min-h-[70vh]"
     >
       <div className="media-slot absolute inset-x-0 top-0 -z-10 h-[36rem] md:inset-0 md:h-auto">
         <FadeInImage

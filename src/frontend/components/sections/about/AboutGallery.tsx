@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import type { GalleryImage } from "@/frontend/content/about";
 import { MediaPlaceholder } from "@/frontend/components/ui/MediaPlaceholder";
 
@@ -34,8 +35,8 @@ export function AboutGallery({ desktop, mobile }: AboutGalleryProps) {
             src={image.src}
             sizes="100vw"
             preload={index === 0}
-            className="w-full"
-            style={{ aspectRatio: mobileRatios[index] }}
+            className="gallery-tile w-full"
+            style={{ aspectRatio: mobileRatios[index], "--row": index } as CSSProperties}
           />
         ))}
       </div>
@@ -55,8 +56,10 @@ export function AboutGallery({ desktop, mobile }: AboutGalleryProps) {
                   label={image.label}
                   src={image.src}
                   sizes="(min-width: 1024px) 34vw, 100vw"
-                  className="w-full"
-                  style={{ aspectRatio: ratio }}
+                  className="gallery-tile w-full"
+                  style={
+                    { aspectRatio: ratio, "--row": rowIndex, "--col": columnIndex } as CSSProperties
+                  }
                 />
               );
             })}
