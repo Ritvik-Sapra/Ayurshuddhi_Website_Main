@@ -12,7 +12,8 @@ export function TestimonialCard({
   return (
     <figure
       className={cn(
-        "flex flex-col items-center gap-4 rounded-sm bg-green p-6 text-center text-cream",
+        // Hover lift + glow: Tailwind's `hover:` only matches real pointers, so touch screens never stick.
+        "flex flex-col items-center gap-4 rounded-sm bg-green p-6 text-center text-cream transition-[translate,box-shadow] duration-300 ease-out-expo hover:-translate-y-1.5 hover:shadow-lift motion-reduce:transition-none motion-reduce:hover:translate-y-0",
         className,
       )}
     >

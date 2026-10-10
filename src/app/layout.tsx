@@ -4,6 +4,7 @@ import { site } from "@/frontend/content/site";
 import { jsonLdString, localBusinessJsonLd } from "@/frontend/lib/jsonld";
 import { NavBar } from "@/frontend/components/layout/NavBar";
 import { ScrollFlag } from "@/frontend/components/layout/ScrollFlag";
+import { MotionProvider } from "@/frontend/components/ui/MotionProvider";
 import "@/frontend/styles/globals.css";
 import "@/frontend/styles/motion.css";
 import "@/frontend/styles/skeleton.css";
@@ -40,7 +41,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </a>
         <NavBar />
         <ScrollFlag />
-        {children}
+        <MotionProvider>{children}</MotionProvider>
         <script
           type="application/ld+json"
           // Static, server-generated data: safe to inline.

@@ -1,4 +1,5 @@
 import type { About } from "@/frontend/content/about";
+import { Reveal } from "@/frontend/components/ui/Reveal";
 import { MediaPlaceholder } from "@/frontend/components/ui/MediaPlaceholder";
 import { cn } from "@/frontend/lib/cn";
 
@@ -30,10 +31,12 @@ export function AboutPractitioner({ practitioner }: { practitioner: About["pract
             />
           ))}
         </div>
-        <h2 id="practitioner-heading" className="max-w-[350px] text-h1">
-          {practitioner.headingMobile}
-        </h2>
-        <p className="max-w-[340px] text-body">{practitioner.bio}</p>
+        <Reveal className="flex flex-col items-center gap-6">
+          <h2 id="practitioner-heading" className="max-w-[350px] text-h1">
+            {practitioner.headingMobile}
+          </h2>
+          <p className="max-w-[340px] text-body">{practitioner.bio}</p>
+        </Reveal>
         <div className="flex w-full max-w-[340px] flex-col gap-6">
           {photos.slice(2).map((photo) => (
             <MediaPlaceholder
@@ -47,15 +50,12 @@ export function AboutPractitioner({ practitioner }: { practitioner: About["pract
 
       {/* Desktop: centred copy with the four photos scattered around it. */}
       <div className="hidden lg:block">
-        <h2
-          id="practitioner-heading-desktop"
-          className="absolute left-1/2 top-[240px] -translate-x-1/2 whitespace-nowrap text-h1"
-        >
-          {practitioner.headingDesktop}
-        </h2>
-        <p className="absolute left-1/2 top-[353px] w-[500px] -translate-x-1/2 text-center text-body">
-          {practitioner.bio}
-        </p>
+        <Reveal className="absolute left-1/2 top-[240px] w-[500px] -translate-x-1/2 text-center">
+          <h2 id="practitioner-heading-desktop" className="whitespace-nowrap text-h1">
+            {practitioner.headingDesktop}
+          </h2>
+          <p className="mt-[41px] text-body">{practitioner.bio}</p>
+        </Reveal>
         {photos.map((photo, index) => (
           <MediaPlaceholder
             key={photo.label}

@@ -115,7 +115,9 @@
  * look as the hovered original.
  */
 .card-lift {
-  transition: transform var(--duration-base) var(--ease-out-expo);
+  transition:
+    transform var(--duration-slow) var(--ease-out-expo),
+    box-shadow var(--duration-slow) var(--ease-out-expo);
 }
 .card-lift .card-arrow {
   transition: transform var(--duration-base) var(--ease-out-expo);
@@ -126,7 +128,8 @@
 }
 @media (hover: hover) and (pointer: fine) {
   .card-lift:is(:hover, [data-hover]) {
-    transform: translateY(-4px);
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lift);
   }
   .card-lift:is(:hover, [data-hover]) .card-arrow {
     transform: translate(2px, -2px);
@@ -279,11 +282,16 @@
   .faq-panel,
   .faq-answer,
   .card-lift,
+  .card-lift:is(:hover, [data-hover]),
   .card-lift .card-arrow,
+  .card-lift:is(:hover, [data-hover]) .card-arrow,
   .service-card .card-media > :is(img, svg) {
     animation: none;
     transition: none;
     transform: none;
+  }
+  .page-enter {
+    animation-name: page-enter-fade;
   }
   .map-pin::after {
     animation: none;
@@ -530,5 +538,112 @@
   }
   .ct-dots span:nth-child(3) {
     animation-delay: 300ms;
+  }
+}
+
+/* ---------- Page enter ((site)/template.tsx) ----------
+ * A short fade-up as each page mounts. CSS, not JS, so the page is never stuck hidden while
+ * scripts load. /services runs its own entrance (ServicesStage), so it opts out. */
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+@keyframes page-enter-fade {
+  from {
+    opacity: 0;
+  }
+}
+.page-enter {
+  animation: page-enter 0.5s var(--ease-out-expo) backwards;
+}
+.page-enter:has([data-services-stage]) {
+  animation: none;
+}
+
+/*
+ * ---------- Home intro (HomeIntro.tsx) ----------
+ * One-time, ~2.5s. HomeIntro's inline script sets data-state on .home-intro before first paint:
+ *   play    veil + wordmark over the hero; menu button and headline hidden, and the logo tile
+ *           invisible but still laid out (opacity only), so it can be measured
+ *   reveal  wordmark gone, tile shown; menu button and headline fade up; page interactive
+ *   done    overlay removed, everything back to normal
+ * The overlay is display:none unless armed, so without JS (or with reduced motion, which the
+ * script checks) nothing is ever hidden. The wordmark, veil, tile and emblem are all driven
+ * from one JS timeline; this file only holds the resting states and the final fade-ups.
+ */
+.home-intro {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+}
+.home-intro[data-state="play"] {
+  display: block;
+}
+.hi-veil {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--color-cream) 88%, transparent);
+}
+/* Fixed and centred with the `translate` property, so JS can own `transform` outright. */
+.hi-mark {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  transform-origin: left center;
+  font-family: var(--font-playfair), serif;
+  /* 8.4vw keeps the single line inside a 390px screen. */
+  font-size: min(clamp(2.75rem, 7vw, 5rem), 8.4vw);
+  line-height: 1.1;
+  white-space: nowrap;
+}
+/* The mask: padded so descenders and the italic overhang are not clipped. */
+.hi-curtain {
+  overflow: clip;
+  padding: 0.2em 0.3em;
+}
+.hi-stack {
+  display: flex;
+  align-items: baseline;
+  transform: translateY(105%);
+}
+.hi-ch {
+  display: inline-block;
+}
+.hi-name {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-wordmark-name);
+}
+.hi-sub {
+  margin-left: 0.25em;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--color-wordmark-sub);
+}
+
+body:has(.home-intro[data-state="play"]) header > a.nav-chip {
+  opacity: 0;
+}
+body:has(.home-intro[data-state="play"]) :is(header > .menu-trigger, .home-reveal) {
+  opacity: 0;
+}
+body:has(.home-intro[data-state="play"]) .home-reveal {
+  transform: translateY(16px);
+}
+body:has(.home-intro[data-state="reveal"]) :is(header > .menu-trigger, .home-reveal) {
+  transition:
+    opacity 0.7s var(--ease-out-expo),
+    transform 0.7s var(--ease-out-expo);
+}
+body:has(.home-intro[data-state="reveal"]) .home-reveal--late {
+  transition-delay: 0.12s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-intro {
+    display: none !important;
   }
 }
